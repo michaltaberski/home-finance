@@ -2,8 +2,8 @@
 
 import { groupBy, mapValues } from "lodash";
 import { $ } from "zx";
-import { getRowsFromCsvFile } from "./src/csvUtils";
-import { saveJsonToFile, updateTextFile } from "./src/utils";
+import { getRowsFromCsvFile } from "../csvUtils";
+import { saveJsonToFile, updateTextFile } from "../utils";
 
 $.verbose = false;
 

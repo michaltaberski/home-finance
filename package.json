@@ -2,15 +2,23 @@
   "name": "@home-finance/root",
   "private": true,
   "devDependencies": {
+    "@types/lodash": "^4.14.181",
     "craco": "^0.0.3"
   },
   "scripts": {
-    "start": "yarn workspace @home-finance/dashboard start"
+    "start": "yarn workspace @home-finance/dashboard start",
+    "read-allegro": "yarn workspace @home-finance/cli-processor read-allegro",
+    "read-input-data": "yarn workspace @home-finance/cli-processor read-input-data",
+    "process-input-data": "yarn workspace @home-finance/cli-processor process-input-data"
   },
   "workspaces": {
     "packages": [
       "packages/**"
     ]
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "zx": "^6.0.7"
+  }
 }

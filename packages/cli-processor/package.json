@@ -4,11 +4,16 @@
   "private": true,
   "main": "./src/index.ts",
   "eslintConfig": {},
+  "scripts": {
+    "ts-node": "../../node_modules/.bin/ts-node",
+    "process-input-data": "yarn ts-node ./src/scripts/process-input-data.ts",
+    "read-input-data": "yarn ts-node ./src/scripts/read-input-data.ts",
+    "read-allegro": "yarn ts-node ./src/scripts/read-allegro.ts"
+  },
   "dependencies": {
     "@home-finance/shared": "workspace:^",
     "csv-parser": "^3.0.0",
     "inquirer": "^8.2.2",
-    "lodash": "^4.17.21",
     "ts-node": "^10.7.0",
     "zx": "^6.0.7"
   }

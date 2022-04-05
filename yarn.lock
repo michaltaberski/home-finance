@@ -1972,7 +1972,6 @@ __metadata:
     "@home-finance/shared": "workspace:^"
     csv-parser: ^3.0.0
     inquirer: ^8.2.2
-    lodash: ^4.17.21
     ts-node: ^10.7.0
     zx: ^6.0.7
   languageName: unknown
@@ -2029,7 +2028,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@home-finance/root@workspace:."
   dependencies:
+    "@types/lodash": ^4.14.181
     craco: ^0.0.3
+    lodash: ^4.17.21
+    zx: ^6.0.7
   languageName: unknown
   linkType: soft
 
@@ -2787,6 +2789,13 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.181":
+  version: 4.14.181
+  resolution: "@types/lodash@npm:4.14.181"
+  checksum: 0d1863d8383fd2f8bb42e9e3fc1d6255bb88ff034d6df848941063698944313dae944fc1270315613e3d303fae7c7a9a86085ad3235ed6204c56c4b0b3699aa9
   languageName: node
   linkType: hard
 
