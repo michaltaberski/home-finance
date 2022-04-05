@@ -1969,11 +1969,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@home-finance/cli-processor@workspace:packages/cli-processor"
   dependencies:
-    "@home-finance/shared": "workspace:^"
+    "@types/iconv": ^3.0.1
+    "@types/lodash": ^4.14.181
+    "@types/xml2js": ^0.4.9
     csv-parser: ^3.0.0
+    fuzzy: ^0.1.3
+    iconv: ^3.0.1
     inquirer: ^8.2.2
-    ts-node: ^10.7.0
-    zx: ^6.0.7
+    lodash: ^4.17.21
+    ts-node: ^10.2.1
+    typescript: ^4.5.2
+    utf8: ^3.0.0
+    xml2js: ^0.4.23
+    zx: ^4.2.0
   languageName: unknown
   linkType: soft
 
@@ -3395,26 +3403,6 @@ __metadata:
   checksum: 27fc8060ffc69481ff6719cd3ee06387d2b88381cb0ce626f087781bbd02201a645a9febc8e7e7333558354b33b1d2f922ad13560be4ec1b7ba9e76fc1c1241d
   languageName: node
   linkType: hard
-
-"accounting-processor@workspace:packages/accounting-csv":
-  version: 0.0.0-use.local
-  resolution: "accounting-processor@workspace:packages/accounting-csv"
-  dependencies:
-    "@types/iconv": ^3.0.1
-    "@types/lodash": ^4.14.181
-    "@types/xml2js": ^0.4.9
-    csv-parser: ^3.0.0
-    fuzzy: ^0.1.3
-    iconv: ^3.0.1
-    inquirer: ^8.2.2
-    lodash: ^4.17.21
-    ts-node: ^10.2.1
-    typescript: ^4.5.2
-    utf8: ^3.0.0
-    xml2js: ^0.4.23
-    zx: ^4.2.0
-  languageName: unknown
-  linkType: soft
 
 "acorn-globals@npm:^6.0.0":
   version: 6.0.0

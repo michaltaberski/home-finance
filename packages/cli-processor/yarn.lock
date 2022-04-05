@@ -28,9 +28,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@home-finance/accounting-csv@workspace:.":
+"@home-finance/cli-processor@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@home-finance/accounting-csv@workspace:."
+  resolution: "@home-finance/cli-processor@workspace:."
   dependencies:
     "@types/iconv": ^3.0.1
     "@types/lodash": ^4.14.181
