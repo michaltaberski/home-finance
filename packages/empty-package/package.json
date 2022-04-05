@@ -1,5 +1,5 @@
 {
-  "name": "@home-finance/shared",
+  "name": "@home-finance/empty-package",
   "version": "0.1.0",
   "private": true,
   "main": "./src/index.ts",

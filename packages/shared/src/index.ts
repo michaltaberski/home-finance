@@ -1,5 +1,5 @@
 export const MyConst = "fasd";
 
-export enum MyEnum {
+export enum MyEnumm {
   MY_OPT = "2134",
 }

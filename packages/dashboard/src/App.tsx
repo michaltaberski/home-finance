@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Button } from "@home-finance/components";
-import { MyConst, MyEnum } from "@home-finance/shared";
+import { MyConst, MyEnumm } from "@home-finance/shared";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,7 +12,7 @@ function App() {
       {MyConst}
       <br />
       <br />
-      {MyEnum.MY_OPT}
+      {MyEnumm.MY_OPT}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         Your count is {count}
