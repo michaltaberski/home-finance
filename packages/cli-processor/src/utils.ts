@@ -16,12 +16,10 @@ import {
   Category,
   ExcludeFalsy,
   Operation,
-  OutputData,
+  BySourceOutputData,
   Source,
-  readTextFile,
-  saveTextToFile,
-  getDataPath,
 } from "@home-finance/shared";
+import { getDataPath, readTextFile } from "@home-finance/fs-utils";
 
 const getAllegroTransactionsByDay = (date: string) => {
   console.log("FIXME");
@@ -130,7 +128,7 @@ export const getOperationsFromFile = async (
 
 export const readOutputData = async (
   source: Source
-): Promise<null | OutputData> => {
+): Promise<null | BySourceOutputData> => {
   const textContent = await readTextFile(`output/${source}.json`);
   return JSON.parse(textContent);
 };
@@ -145,7 +143,7 @@ type ProcessInputDataOptions = {
 export const processInputDataBySource = async (
   source: Source,
   options?: ProcessInputDataOptions
-): Promise<OutputData> => {
+): Promise<BySourceOutputData> => {
   const { skipCategoryPrompt = false } = options || {};
   const operations: Operation[] = [];
   const fileList = await getFilesListBySource(source);
@@ -185,6 +183,18 @@ export const processInputDataBySource = async (
     lastUpdate: new Date().toISOString(),
     lastOperationAt: lastOperation.date,
     currentBalance: lastOperation.balanceAfterOperation,
+    source,
     operations: sortedOperations,
   };
+};
+
+export const concatOperations = async (sources: Source[]) => {
+  const bySourceOutputs = await (
+    await Promise.all(sources.map((source) => readOutputData(source)))
+  ).filter(ExcludeFalsy);
+  const allOperations = bySourceOutputs.reduce<Operation[]>(
+    (acc, data) => [...acc, ...data.operations],
+    []
+  );
+  return sortBy(allOperations, "date").reverse();
 };

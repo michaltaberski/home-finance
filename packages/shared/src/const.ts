@@ -1,5 +1,15 @@
-import { Category } from "./types";
+import { Category, Source } from "./types";
 import { invert, mapValues } from "lodash";
+
+export const SOURCE_TO_LABEL_MAP: Record<Source, string> = {
+  [Source.ING]: "ING",
+  [Source.INTELIGO]: "Inteligo",
+  [Source.MBANK_COMPANY]: "mBank (Proactivus)",
+  [Source.MBANK_PRIVATE]: "mBank (Michał)",
+  [Source.REVOLUT]: "Revolut",
+  [Source.SANTANDER_BANK]: "Santander",
+  [Source.SANTANDER_CREDIT_CARD]: "Santander (karta kredytowa)",
+};
 
 export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.UTILITY_BILL]: "Rachunek za media",

@@ -9,21 +9,27 @@ export const getDataPath = (path: string) => {
   return resolvePath("../../data/", path);
 };
 
-export const readTextFile = (filePath: string): Promise<string | null> => {
-  return new Promise((resolve) => {
+export const readTextFile = (filePath: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
     fs.readFile(getDataPath(filePath), "utf8", (err, data) => {
       if (err) {
         console.error(err);
         console.trace();
       }
-      if (err) resolve(null);
-      try {
+      if (err) {
+        reject(err);
+      } else {
         resolve(data);
-      } catch (error) {
-        resolve(null);
       }
     });
   });
+};
+
+export const readJsonFile = async <T extends object>(
+  filePath: string
+): Promise<T | null> => {
+  const textFile = await readTextFile(filePath);
+  return textFile ? JSON.parse(textFile) : null;
 };
 
 export const saveTextToFile = async (text: string, filePath: string) => {
@@ -39,6 +45,6 @@ export const updateTextFile = async (
   updateFn: (inputString: string) => string
 ) => {
   const text = await readTextFile(filePath);
-  const processedText = updateFn(text);
+  const processedText = updateFn(text || "");
   await saveTextToFile(processedText, filePath);
 };

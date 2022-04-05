@@ -5,15 +5,17 @@
   "main": "./src/index.ts",
   "eslintConfig": {},
   "scripts": {
-    "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
+    "check-types": "tsc --noEmit",
+    "start": "nodemon"
   },
   "dependencies": {
+    "@home-finance/fs-utils": "workspace:^",
+    "@home-finance/shared": "workspace:^",
     "dotenv": "^16.0.0",
     "express": "^4.17.3"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.23",
     "concurrently": "^7.1.0",

@@ -87,12 +87,10 @@ export const categorySuggestion = (
 ): Category | null => {
   const phrase = operation.description.toLowerCase();
   const [category] =
-    Object.entries(filterMap).find(
-      ([, filterPhrases]: [Category, string[]]) => {
-        return !!filterPhrases.find((filterPhrase) => {
-          return !!phrase.match(filterPhrase.toLowerCase());
-        });
-      }
-    ) || [];
+    Object.entries(filterMap).find(([, filterPhrases]: [string, string[]]) => {
+      return !!filterPhrases.find((filterPhrase) => {
+        return !!phrase.match(filterPhrase.toLowerCase());
+      });
+    }) || [];
   return (category as Category) || null;
 };

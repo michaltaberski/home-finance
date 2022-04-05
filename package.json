@@ -3,10 +3,13 @@
   "private": true,
   "devDependencies": {
     "@types/lodash": "^4.14.181",
+    "concurrently": "^7.1.0",
     "craco": "^0.0.3"
   },
   "scripts": {
-    "start": "yarn workspace @home-finance/dashboard start",
+    "start": "concurrently \"yarn start-dashboard\" \"yarn start-api\"",
+    "start-dashboard": "yarn workspace @home-finance/dashboard start",
+    "start-api": "yarn workspace @home-finance/api start",
     "read-allegro": "yarn workspace @home-finance/cli-processor read-allegro",
     "read-input-data": "yarn workspace @home-finance/cli-processor read-input-data",
     "process-input-data": "yarn workspace @home-finance/cli-processor process-input-data"
@@ -18,6 +21,7 @@
   },
   "packageManager": "yarn@3.2.0",
   "dependencies": {
+    "cors": "^2.8.5",
     "lodash": "^4.17.21",
     "zx": "^6.0.7"
   }

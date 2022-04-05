@@ -1,6 +1,7 @@
 #! ./node_modules/.bin/ts-node
 
-import { saveJsonToFile, updateTextFile } from "@home-finance/shared";
+import { saveJsonToFile, updateTextFile } from "@home-finance/fs-utils";
+import { roundNumber } from "@home-finance/shared";
 import { groupBy, mapValues } from "lodash";
 import { $ } from "zx";
 import { getRowsFromCsvFile } from "./src/csvUtils";
@@ -16,9 +17,9 @@ type TransactionSegment = {
   sellerLogin: string;
 };
 
-const round = (num: number) => Math.round(num * 100) / 100;
-
-const csvRowToTransaction = (row): TransactionSegment => {
+const csvRowToTransaction = (row: {
+  [key: string]: string;
+}): TransactionSegment => {
   const rawRow = mapValues(row, (value: string) =>
     value.replace(/^'/, "").replace(/'$/, "")
   );
@@ -28,25 +29,31 @@ const csvRowToTransaction = (row): TransactionSegment => {
   return {
     tarnsactionTime: rawRow["Data zakupu"],
     itemsCount: count,
-    itemUnitPrice: round(parseFloat(rawRow["Kwota transakcji"])),
-    itemTotalPrice: round(parseFloat(rawRow["Kwota transakcji"]) * count),
+    itemUnitPrice: roundNumber(parseFloat(rawRow["Kwota transakcji"])),
+    itemTotalPrice: roundNumber(parseFloat(rawRow["Kwota transakcji"]) * count),
     description: rawRow["Tytuł oferty"],
     sellerLogin: rawRow["Login sprzedawcy"],
   };
 };
 
+type AllegroTransaction = {
+  tarnsactionTime: string;
+  sellerLogin: string;
+  totalPrice: number;
+  items: string[];
+};
+
 const squashAllegroTransaction = (
   transactionSegments: TransactionSegment[]
-  // TODO fix types
-): any => {
-  return transactionSegments.reduce(
+): AllegroTransaction => {
+  return transactionSegments.reduce<AllegroTransaction>(
     (acc, { description, itemTotalPrice, tarnsactionTime, sellerLogin }) => ({
       tarnsactionTime,
       sellerLogin,
-      totalPrice: round(acc.totalPrice + itemTotalPrice),
+      totalPrice: roundNumber(acc.totalPrice + itemTotalPrice),
       items: [description, ...acc.items],
     }),
-    { items: [], totalPrice: 0 }
+    { tarnsactionTime: "", sellerLogin: "", items: [], totalPrice: 0 }
   );
 };
 

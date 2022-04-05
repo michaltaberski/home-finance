@@ -23,7 +23,7 @@ export const getOperationsFromRevolutCsvFile = async (
   source: Source
 ): Promise<Operation[]> => {
   return new Promise<Operation[]>((resolve) => {
-    const results = [];
+    const results: Operation[] = [];
     fs.createReadStream(filePath)
       .pipe(csv())
       .on("data", (data) => results.push(mbankCsvRowToOperation(data, source)))

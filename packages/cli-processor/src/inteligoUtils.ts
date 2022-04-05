@@ -10,7 +10,7 @@ export const getOperationsFromInteligoXmlFile = async (
   const rawOperationsXml =
     parsedXml["account-history"]["operations"][0]["operation"];
 
-  return rawOperationsXml.map((transaction): Operation => {
+  return rawOperationsXml.map((transaction: any): Operation => {
     return {
       id: transaction["$"]["id"],
       date: transaction["exec-date"].join(""),

@@ -10,7 +10,7 @@ type SantanderCreditCardRow = {
 
 const toIsoDate = (date: string) => {
   if (!date) return "";
-  const [, day, month, year] = date.match(/(\d\d)-(\d\d)-(\d\d\d\d)/);
+  const [, day, month, year] = date.match(/(\d\d)-(\d\d)-(\d\d\d\d)/) || [];
   return [year, month, day].join("-");
 };
 

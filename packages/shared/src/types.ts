@@ -53,9 +53,23 @@ export type Operation = {
   balanceAfterOperation: number;
 };
 
-export type OutputData = {
+export type BySourceOutputData = {
   lastUpdate: string;
   lastOperationAt: string;
   currentBalance: number;
+  source: Source;
   operations: Operation[];
+};
+
+export type FilterProps = {
+  includeInternalTransfers: boolean;
+  perPage: number;
+  currentPage: number;
+  searchPhrase: string;
+  amount: { from: number | null; to: number | null };
+  date: { from: string | null; to: string | null };
+  sortBy: keyof Operation;
+  sortOrder: "ascend" | "descend" | undefined;
+  source: null | Source[];
+  category: null | Category[];
 };

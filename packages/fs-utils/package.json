@@ -1,14 +1,12 @@
 {
-  "name": "@home-finance/shared",
+  "name": "@home-finance/fs-utils",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
   "eslintConfig": {},
-  "scripts": {
-    "check-types": "tsc --noEmit"
-  },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "zx": "^4.2.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.181"
