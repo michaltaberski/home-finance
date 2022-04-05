@@ -1,3 +1,5 @@
-export enum DemoEnum {
-  VAL_1 = "I ma the val1",
+export const MyConst = "fasd";
+
+export enum MyEnum {
+  MY_OPT = "2134",
 }
