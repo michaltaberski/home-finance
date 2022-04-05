@@ -1,0 +1,10 @@
+{
+  "name": "@home-finance/cli-processor",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "eslintConfig": {},
+  "dependencies": {
+    "@home-finance/shared": "0.0.0"
+  }
+}

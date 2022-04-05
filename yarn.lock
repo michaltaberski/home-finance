@@ -1965,7 +1965,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@home-finance/components@0.1.0, @home-finance/components@workspace:packages/components":
+"@home-finance/cli-processor@workspace:packages/cli-processor":
+  version: 0.0.0-use.local
+  resolution: "@home-finance/cli-processor@workspace:packages/cli-processor"
+  dependencies:
+    "@home-finance/shared": 0.0.0
+  languageName: unknown
+  linkType: soft
+
+"@home-finance/components@0.0.0, @home-finance/components@workspace:packages/components":
   version: 0.0.0-use.local
   resolution: "@home-finance/components@workspace:packages/components"
   dependencies:
@@ -1989,8 +1997,8 @@ __metadata:
   resolution: "@home-finance/dashboard@workspace:packages/dashboard"
   dependencies:
     "@craco/craco": ^6.4.3
-    "@home-finance/components": 0.1.0
-    "@home-finance/shared": 0.1.0
+    "@home-finance/components": 0.0.0
+    "@home-finance/shared": 0.0.0
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
     "@testing-library/user-event": ^12.1.10
@@ -2021,7 +2029,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@home-finance/shared@0.1.0, @home-finance/shared@workspace:packages/shared":
+"@home-finance/shared@0.0.0, @home-finance/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@home-finance/shared@workspace:packages/shared"
   languageName: unknown
