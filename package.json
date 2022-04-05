@@ -2,11 +2,10 @@
   "name": "@home-finance/root",
   "private": true,
   "devDependencies": {
-    "craco": "^0.0.3",
-    "lerna": "^4.0.0"
+    "craco": "^0.0.3"
   },
   "scripts": {
-    "start": "lerna exec --scope @home-finance/dashboard -- yarn start"
+    "start": "yarn workspace @home-finance/dashboard start"
   },
   "workspaces": {
     "packages": [
