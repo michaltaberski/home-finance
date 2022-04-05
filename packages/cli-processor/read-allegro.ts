@@ -4,6 +4,7 @@ import { groupBy, mapValues } from "lodash";
 import { $ } from "zx";
 import { getRowsFromCsvFile } from "./src/csvUtils";
 import { saveJsonToFile, updateTextFile } from "./src/utils";
+import * as X from "@home-finance/shared";
 
 $.verbose = false;
 
@@ -91,4 +92,6 @@ const ANETA_ALLEGRO_FILE_PATH = "./input-data/zakupy-na-allegro-aneta.csv";
   await saveJsonToFile(groupedByDay, "./output-data/allegro-by-day.json");
 
   console.log("groupedByDay ", groupedByDay);
+
+  console.log("X.MyConst ", X.MyConst);
 })();

@@ -1,6 +1,7 @@
 {
   "name": "@home-finance/cli-processor",
   "author": "Michał Taberski (http://michaltaberski.com/)",
+  "private": true,
   "scripts": {
     "process-input-data": "./node_modules/.bin/ts-node process-input-data.ts",
     "read-input-data": "./node_modules/.bin/ts-node read-input-data.ts",
@@ -14,6 +15,7 @@
     "zx": "^4.2.0"
   },
   "dependencies": {
+    "@home-finance/shared": "workspace:^",
     "@types/xml2js": "^0.4.9",
     "csv-parser": "^3.0.0",
     "fuzzy": "^0.1.3",

@@ -1969,6 +1969,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@home-finance/cli-processor@workspace:packages/cli-processor"
   dependencies:
+    "@home-finance/shared": "workspace:^"
     "@types/iconv": ^3.0.1
     "@types/lodash": ^4.14.181
     "@types/xml2js": ^0.4.9
