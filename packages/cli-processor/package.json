@@ -6,7 +6,7 @@
     "process-input-data": "./node_modules/.bin/ts-node process-input-data.ts",
     "read-input-data": "./node_modules/.bin/ts-node read-input-data.ts",
     "read-allegro": "./node_modules/.bin/ts-node read-allegro.ts",
-    "check-types":"tsc -p tsconfig.json"
+    "check-types": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@types/iconv": "^3.0.1",

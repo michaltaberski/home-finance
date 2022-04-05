@@ -2047,6 +2047,10 @@ __metadata:
 "@home-finance/shared@workspace:^, @home-finance/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@home-finance/shared@workspace:packages/shared"
+  dependencies:
+    "@types/lodash": ^4.14.181
+    lodash: ^4.17.21
+    zx: ^4.2.0
   languageName: unknown
   linkType: soft
 

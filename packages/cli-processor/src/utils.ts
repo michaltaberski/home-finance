@@ -1,4 +1,4 @@
-import { $, fs } from "zx";
+import { $ } from "zx";
 import { getOperationsFromInteligoXmlFile } from "./inteligoUtils";
 import * as inquirer from "inquirer";
 import { keyBy, sortBy } from "lodash";
@@ -7,7 +7,7 @@ import { getRowsFromCsvFile } from "./csvUtils";
 import { santanderBankCsvRowToOperation } from "./santanderBankUtils";
 import { santanderCreditCardCsvRowToOperation } from "./santanderCreditCardUtils";
 import { categorySuggestion } from "./filterUtils";
-import allegroTransactions from "../output-data/allegro-by-day.json";
+// import allegroTransactions from "../output-data/allegro-by-day.json";
 import {
   CATEGORY_TO_LABEL_MAP,
   EXPENSE_CATGORIES,
@@ -18,10 +18,14 @@ import {
   Operation,
   OutputData,
   Source,
+  readTextFile,
+  saveTextToFile,
 } from "@home-finance/shared";
 
 const getAllegroTransactionsByDay = (date: string) => {
-  return allegroTransactions[date];
+  console.log("FIXME");
+  return [];
+  // return allegroTransactions[date];
 };
 
 export const selectCategoryForOperation = async (
@@ -123,41 +127,11 @@ export const getOperationsFromFile = async (
   return [];
 };
 
-export const saveTextToFile = async (text: string, filePath: string) => {
-  await $`echo ${text} > ${filePath}`;
-};
-
-export const saveJsonToFile = async (json: any, filePath: string) => {
-  await $`echo ${JSON.stringify(json, null, 2)} > ${filePath}`;
-};
-
-export const readTextFile = (filePath: string): Promise<string | null> => {
-  return new Promise((resolve) => {
-    fs.readFile(filePath, "utf8", (err, data) => {
-      if (err) resolve(null);
-      try {
-        resolve(data);
-      } catch (error) {
-        resolve(null);
-      }
-    });
-  });
-};
-
 export const readOutputData = async (
   source: Source
 ): Promise<null | OutputData> => {
-  const textContent = await readTextFile(`./output-data/${source}.json`);
+  const textContent = await readTextFile(`output/${source}.json`);
   return JSON.parse(textContent);
-};
-
-export const updateTextFile = async (
-  filePath: string,
-  updateFn: (inputString: string) => string
-) => {
-  const text = await readTextFile(filePath);
-  const processedText = updateFn(text);
-  await saveTextToFile(processedText, filePath);
 };
 
 const sortOperations = (operations: Operation[], _source: Source) => {

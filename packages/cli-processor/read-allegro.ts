@@ -1,10 +1,9 @@
 #! ./node_modules/.bin/ts-node
 
+import { saveJsonToFile, updateTextFile } from "@home-finance/shared";
 import { groupBy, mapValues } from "lodash";
 import { $ } from "zx";
 import { getRowsFromCsvFile } from "./src/csvUtils";
-import { saveJsonToFile, updateTextFile } from "./src/utils";
-import * as X from "@home-finance/shared";
 
 $.verbose = false;
 
@@ -51,8 +50,8 @@ const squashAllegroTransaction = (
   );
 };
 
-const MICHAL_ALLEGRO_FILE_PATH = "./input-data/zakupy-na-allegro-michal.csv";
-const ANETA_ALLEGRO_FILE_PATH = "./input-data/zakupy-na-allegro-aneta.csv";
+const MICHAL_ALLEGRO_FILE_PATH = "input/zakupy-na-allegro-michal.csv";
+const ANETA_ALLEGRO_FILE_PATH = "input/zakupy-na-allegro-aneta.csv";
 
 (async () => {
   await updateTextFile(MICHAL_ALLEGRO_FILE_PATH, (text) => {
@@ -89,7 +88,7 @@ const ANETA_ALLEGRO_FILE_PATH = "./input-data/zakupy-na-allegro-aneta.csv";
   const groupedByDay = groupBy(squashedTransactions, ({ tarnsactionTime }) =>
     tarnsactionTime?.substring(0, 10)
   );
-  await saveJsonToFile(groupedByDay, "./output-data/allegro-by-day.json");
+  await saveJsonToFile(groupedByDay, "output/allegro-by-day.json");
 
   console.log("groupedByDay ", groupedByDay);
 })();
