@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import {} from "@home-finance/shared";
+import { Button } from "@home-finance/components";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,6 +12,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         Your count is {count}
         <button onClick={() => setCount((prev) => ++prev)} />
+        <Button onClick={() => {}}>fasldkj</Button>
       </header>
     </div>
   );
