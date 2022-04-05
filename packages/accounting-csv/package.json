@@ -1,5 +1,5 @@
 {
-  "name": "accounting-processor",
+  "name": "@home-finance/accounting-csv",
   "author": "Michał Taberski (http://michaltaberski.com/)",
   "scripts": {
     "process-input-data": "./node_modules/.bin/ts-node process-input-data.ts",
