@@ -1,4 +1,3 @@
-import { Category, ExcludeFalsy, Operation, OutputData, Source } from "./types";
 import { $, fs } from "zx";
 import { getOperationsFromInteligoXmlFile } from "./inteligoUtils";
 import * as inquirer from "inquirer";
@@ -14,7 +13,12 @@ import {
   EXPENSE_CATGORIES,
   INCOME_CATEGORIES,
   LABEL_TO_CATEGORY_MAP,
-} from "./const";
+  Category,
+  ExcludeFalsy,
+  Operation,
+  OutputData,
+  Source,
+} from "@home-finance/shared";
 
 const getAllegroTransactionsByDay = (date: string) => {
   return allegroTransactions[date];

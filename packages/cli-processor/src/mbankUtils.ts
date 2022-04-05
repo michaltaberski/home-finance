@@ -1,5 +1,5 @@
 import { fs } from "zx";
-import { Operation, Source } from "./types";
+import { Operation, Source } from "@home-finance/shared";
 import csv from "csv-parser";
 
 type MbankCsvRow = {};

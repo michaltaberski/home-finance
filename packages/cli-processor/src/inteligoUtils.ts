@@ -1,6 +1,6 @@
 import { $ } from "zx";
 import * as xml2js from "xml2js";
-import { Source, Operation } from "./types";
+import { Operation, Source } from "@home-finance/shared";
 
 export const getOperationsFromInteligoXmlFile = async (
   filePath: string

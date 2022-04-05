@@ -1,4 +1,4 @@
-import { Operation, Source } from "./types";
+import { Operation, Source } from "@home-finance/shared";
 
 type SantanderCreditCardRow = {
   id: string; // quite meaning less, don't use it

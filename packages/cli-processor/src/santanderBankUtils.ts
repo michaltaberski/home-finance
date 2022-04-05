@@ -1,4 +1,4 @@
-import { Operation, Source } from "./types";
+import { Operation, Source } from "@home-finance/shared";
 
 type SantanderBankRow = {};
 

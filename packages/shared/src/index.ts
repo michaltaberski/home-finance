@@ -1,5 +1,2 @@
-export const MyConst = "fasd";
-
-export enum MyEnumm {
-  MY_OPT = "2134",
-}
+export * from "./const";
+export * from "./types";

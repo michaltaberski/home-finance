@@ -1,4 +1,4 @@
-import { Category, Operation, Source } from "./types";
+import { Category, Operation, Source } from "@home-finance/shared";
 
 type FilterMap = Partial<Record<Category, string[]>>;
 
