@@ -1,8 +1,8 @@
 #! ./node_modules/.bin/ts-node
 
 import { $ } from "zx";
-import { Source } from "./src/types";
 import { processInputDataBySource } from "./src/utils";
+import { Source } from "@home-finance/shared";
 
 $.verbose = false;
 

@@ -20,6 +20,7 @@ import {
   Source,
   readTextFile,
   saveTextToFile,
+  getDataPath,
 } from "@home-finance/shared";
 
 const getAllegroTransactionsByDay = (date: string) => {
@@ -81,10 +82,10 @@ export const selectCategoryForOperation = async (
 };
 
 export const getFilesListBySource = async (source: Source) =>
-  (await $`ls input-data/${source}`).stdout
+  (await $`ls ${getDataPath(`input/${source}`)}`).stdout
     .trim()
     .split("/n")
-    .map((fileName) => `./input-data/${source}/${fileName}`);
+    .map((fileName) => getDataPath(`input/${source}/${fileName}`));
 
 /**
  * Process command args to object eg

@@ -60,6 +60,7 @@ const ANETA_ALLEGRO_FILE_PATH = "input/zakupy-na-allegro-aneta.csv";
       .replace(/&amp;/g, "&")
       .replace(/&gt;/g, ">");
   });
+
   await updateTextFile(ANETA_ALLEGRO_FILE_PATH, (text) => {
     return text
       .replace(/&quot;/g, '"')
@@ -72,22 +73,27 @@ const ANETA_ALLEGRO_FILE_PATH = "input/zakupy-na-allegro-aneta.csv";
     csvRowToTransaction,
     { separator: ";" }
   );
+
   const anetasTransactions = await getRowsFromCsvFile(
     ANETA_ALLEGRO_FILE_PATH,
     csvRowToTransaction,
     { separator: ";" }
   );
+
   const groupedTransactions = groupBy(
     [...michalsTransactions, ...anetasTransactions],
     ({ tarnsactionTime, sellerLogin }) =>
       [tarnsactionTime?.substring(0, 16), sellerLogin].join("-")
   );
+
   const squashedTransactions = Object.values(
     mapValues(groupedTransactions, squashAllegroTransaction)
   );
+
   const groupedByDay = groupBy(squashedTransactions, ({ tarnsactionTime }) =>
     tarnsactionTime?.substring(0, 10)
   );
+
   await saveJsonToFile(groupedByDay, "output/allegro-by-day.json");
 
   console.log("groupedByDay ", groupedByDay);

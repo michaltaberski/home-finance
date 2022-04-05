@@ -1,8 +1,8 @@
 #! ./node_modules/.bin/ts-node
 
+import { saveJsonToFile, Source } from "@home-finance/shared";
 import { $ } from "zx";
-import { Source } from "./src/types";
-import { processInputDataBySource, saveJsonToFile } from "./src/utils";
+import { processInputDataBySource } from "./src/utils";
 
 $.verbose = false;
 
@@ -13,6 +13,6 @@ $.verbose = false;
     Source.SANTANDER_CREDIT_CARD,
   ]) {
     const outputData = await processInputDataBySource(source);
-    await saveJsonToFile(outputData, `output-data/${source}.json`);
+    await saveJsonToFile(outputData, `output/${source}.json`);
   }
 })();
