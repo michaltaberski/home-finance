@@ -6,6 +6,7 @@
   "eslintConfig": {},
   "scripts": {
     "ts-node": "../../node_modules/.bin/ts-node",
+    "demo": "yarn ts-node demo.ts",
     "process-input-data": "yarn ts-node ./src/scripts/process-input-data.ts",
     "read-input-data": "yarn ts-node ./src/scripts/read-input-data.ts",
     "read-allegro": "yarn ts-node ./src/scripts/read-allegro.ts"
