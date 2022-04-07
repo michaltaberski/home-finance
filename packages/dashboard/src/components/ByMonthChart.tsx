@@ -70,16 +70,11 @@ type ChartDataFormat = {
   name: string;
 } & Partial<Record<Category, number>>;
 
-const monthToLabel = (monthString: string) => {
-  const [y, m] = monthString.match(/\d+/g);
-  return m;
-};
-
 const groupedOeprationsToChartData = (
   groupedOeprations: GroupedOperations
 ): ChartDataFormat[] => {
   return Object.entries(groupedOeprations).map(([month, perCategory]) => ({
-    name: monthToLabel(month),
+    name: month,
     ...mapValues(perCategory, ({ balance }: SquashedOperations) =>
       Math.abs(balance)
     ),

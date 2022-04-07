@@ -74,7 +74,7 @@ export const OperationsTable = ({
           value: key,
         })),
         render: (val: Category) =>
-          CATEGORY_TO_LABEL_MAP[val].length > 15
+          CATEGORY_TO_LABEL_MAP[val]?.length > 15
             ? `${CATEGORY_TO_LABEL_MAP[val].substring(0, 14)}...`
             : CATEGORY_TO_LABEL_MAP[val],
         sorter: true,
