@@ -3,14 +3,9 @@ import { Logo } from "./components/Logo";
 import { useFetch } from "./hooks";
 import { OperationsTable } from "./components/OperationsTable";
 import { Operation } from "@home-finance/shared";
-import {
-  filterOperations,
-  groupOperationsByCategory,
-  groupOperationsByMonth,
-  squashOperations,
-} from "./utils";
+import { filterOperations } from "./utils";
 import { useStore } from "./useStore";
-import { mapValues } from "lodash";
+import { ByMonthChart } from "./components/ByMonthChart";
 
 const { Header, Content, Footer } = Layout;
 
@@ -38,20 +33,7 @@ function App() {
           */}
         </Breadcrumb>
         <div className="site-layout-content">
-          <pre>
-            {JSON.stringify(
-              mapValues(
-                groupOperationsByMonth(fiteredOperations),
-                (operations) =>
-                  mapValues(
-                    groupOperationsByCategory(operations),
-                    squashOperations
-                  )
-              ),
-              null,
-              2
-            )}
-          </pre>
+          <ByMonthChart operations={fiteredOperations} />
           <div
             style={{ marginBottom: 24, display: "flex", justifyContent: "end" }}
           >

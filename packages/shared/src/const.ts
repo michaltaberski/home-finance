@@ -35,6 +35,30 @@ export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.BOOKS_AND_EDUCATION]: "Edukacja i ksiązki",
 };
 
+export const CATEGORY_TO_COLOR_MAP: Record<Category, string> = {
+  [Category.UTILITY_BILL]: "#b75ecd",
+  [Category.FOOD]: "#73c461",
+  [Category.DINING_OUT]: "#7a69da",
+  [Category.HOUSEHOLD]: "#b8b23a",
+  [Category.KIDS]: "#4c7cdc",
+  [Category.INTERNAL_MONEY_TRANSFER]: "#",
+  [Category.WORK_INCOME]: "#",
+  [Category.OTHER_INCOME]: "#",
+  [Category.CAR]: "#",
+  [Category.ENTERTAINMENT]: "#",
+  [Category.GADGET]: "#",
+  [Category.OTHER]: "#",
+  [Category.CLOTHES]: "#",
+  [Category.HEALTH_AND_BEAUTY]: "#",
+  [Category.HOME]: "#",
+  [Category.TRAVEL_AND_LEISURE]: "#",
+  [Category.PRESENTS_AND_CHARITY]: "#",
+  [Category.TAX]: "#",
+  [Category.RETURN]: "#",
+  [Category.NOBILIT]: "#",
+  [Category.BOOKS_AND_EDUCATION]: "#",
+};
+
 export const EXPENSE_CATGORIES = [
   Category.INTERNAL_MONEY_TRANSFER,
   Category.FOOD,

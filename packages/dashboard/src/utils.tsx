@@ -47,7 +47,7 @@ export const groupOperationsByCategory = (operations: Operation[]) => {
   return groupBy(operations, "category");
 };
 
-type SquashedOperations = {
+export type SquashedOperations = {
   expensesAmount: number;
   incomeAmount: number;
   balance: number;

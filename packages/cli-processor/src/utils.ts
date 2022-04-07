@@ -82,7 +82,7 @@ export const selectCategoryForOperation = async (
 export const getFilesListBySource = async (source: Source) =>
   (await $`ls ${getDataPath(`input/${source}`)}`).stdout
     .trim()
-    .split("/n")
+    .split("\n")
     .map((fileName) => getDataPath(`input/${source}/${fileName}`));
 
 /**
