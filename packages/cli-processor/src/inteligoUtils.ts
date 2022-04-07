@@ -9,7 +9,6 @@ export const getOperationsFromInteligoXmlFile = async (
   const parsedXml = await xml2js.parseStringPromise(fileString);
   const rawOperationsXml =
     parsedXml["account-history"]["operations"][0]["operation"];
-
   return rawOperationsXml.map((transaction: any): Operation => {
     return {
       id: transaction["$"]["id"],

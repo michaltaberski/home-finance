@@ -53,14 +53,6 @@ export type Operation = {
   balanceAfterOperation: number;
 };
 
-export type BySourceOutputData = {
-  lastUpdate: string;
-  lastOperationAt: string;
-  currentBalance: number;
-  source: Source;
-  operations: Operation[];
-};
-
 export type FilterProps = {
   includeInternalTransfers: boolean;
   perPage: number;

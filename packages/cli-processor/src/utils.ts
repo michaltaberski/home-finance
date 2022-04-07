@@ -16,7 +16,6 @@ import {
   Category,
   ExcludeFalsy,
   Operation,
-  BySourceOutputData,
   Source,
 } from "@home-finance/shared";
 import { getDataPath, readTextFile } from "@home-finance/fs-utils";
@@ -128,7 +127,7 @@ export const getOperationsFromFile = async (
 
 export const readOutputData = async (
   source: Source
-): Promise<null | BySourceOutputData> => {
+): Promise<null | Operation[]> => {
   const textContent = await readTextFile(`output/${source}.json`);
   return JSON.parse(textContent);
 };
@@ -143,14 +142,15 @@ type ProcessInputDataOptions = {
 export const processInputDataBySource = async (
   source: Source,
   options?: ProcessInputDataOptions
-): Promise<BySourceOutputData> => {
-  const { skipCategoryPrompt = false } = options || {};
+): Promise<Operation[]> => {
+  const { skipCategoryPrompt = true } = options || {};
   const operations: Operation[] = [];
   const fileList = await getFilesListBySource(source);
-  const currentData = await readOutputData(source);
-  const currentOperations = currentData
-    ? keyBy(currentData.operations, ({ id }) => id)
-    : {};
+  const operationsFromCurrentOutputFile = await readOutputData(source);
+  const currentOperations = keyBy(
+    operationsFromCurrentOutputFile || [],
+    ({ id }) => id
+  );
 
   for (const filePath of fileList) {
     const rawOperations = await getOperationsFromFile(filePath, source);
@@ -177,15 +177,7 @@ export const processInputDataBySource = async (
       }
     }
   }
-  const sortedOperations = sortOperations(operations, source);
-  const lastOperation = sortedOperations[0];
-  return {
-    lastUpdate: new Date().toISOString(),
-    lastOperationAt: lastOperation.date,
-    currentBalance: lastOperation.balanceAfterOperation,
-    source,
-    operations: sortedOperations,
-  };
+  return sortOperations(operations, source);
 };
 
 export const concatOperations = async (sources: Source[]) => {
@@ -193,7 +185,7 @@ export const concatOperations = async (sources: Source[]) => {
     await Promise.all(sources.map((source) => readOutputData(source)))
   ).filter(ExcludeFalsy);
   const allOperations = bySourceOutputs.reduce<Operation[]>(
-    (acc, data) => [...acc, ...data.operations],
+    (acc, operations) => [...acc, ...operations],
     []
   );
   return sortBy(allOperations, "date").reverse();
