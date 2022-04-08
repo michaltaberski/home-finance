@@ -6,7 +6,9 @@ import { revoultCsvRowToOperation } from "./revolutUtils";
 import { getRowsFromCsvFile } from "./csvUtils";
 import { santanderBankCsvRowToOperation } from "./santanderBankUtils";
 import { santanderCreditCardCsvRowToOperation } from "./santanderCreditCardUtils";
+import { getMBankCsvRowToOperation } from "./mBankUtils";
 import { categorySuggestion } from "./filterUtils";
+
 // import allegroTransactions from "../output-data/allegro-by-day.json";
 import {
   CATEGORY_TO_LABEL_MAP,
@@ -122,6 +124,17 @@ export const getOperationsFromFile = async (
       "id",
       "x4",
     ]);
+  if (source === Source.MBANK_PROACTIVUS)
+    return getRowsFromCsvFile(
+      filePath,
+      getMBankCsvRowToOperation(Source.MBANK_PROACTIVUS),
+      {
+        mapHeaders: ({ index }) =>
+          "date, description, account, _cat, amountString".split(", ")[index],
+        separator: ";",
+        skipLines: 25,
+      }
+    );
   return [];
 };
 
@@ -139,6 +152,7 @@ const sortOperations = (operations: Operation[], _source: Source) => {
 type ProcessInputDataOptions = {
   skipCategoryPrompt?: boolean;
 };
+
 export const processInputDataBySource = async (
   source: Source,
   options?: ProcessInputDataOptions

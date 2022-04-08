@@ -1,32 +1,22 @@
-import { fs } from "zx";
 import { Operation, Source } from "@home-finance/shared";
-import csv from "csv-parser";
 
-type MbankCsvRow = {};
-
-const mbankCsvRowToOperation = (
-  row: MbankCsvRow,
-  source: Source
-): Operation => ({
-  id: "",
-  date: "",
-  source,
-  amount: 0,
-  description: "",
-  category: null,
-  balanceAfterOperation: 0,
-  otherSide: null,
-});
-
-export const getOperationsFromRevolutCsvFile = async (
-  filePath: string,
-  source: Source
-): Promise<Operation[]> => {
-  return new Promise<Operation[]>((resolve) => {
-    const results: Operation[] = [];
-    fs.createReadStream(filePath)
-      .pipe(csv())
-      .on("data", (data) => results.push(mbankCsvRowToOperation(data, source)))
-      .on("end", () => resolve(results));
-  });
+type MBankCsvRow = {
+  date: string;
+  description: string;
+  account: string;
+  _cat: string;
+  amountString: string;
 };
+
+export const getMBankCsvRowToOperation =
+  (source: Source) =>
+  ({ date, description, amountString }: MBankCsvRow): Operation | null => ({
+    id: [date, amountString.replace(/[\s,]/g, "-")].join(""),
+    source,
+    date,
+    description,
+    amount: parseFloat(amountString.replace(/\s/g, "").replace(/,/g, ".")),
+    category: null,
+    otherSide: null,
+    balanceAfterOperation: 0,
+  });
