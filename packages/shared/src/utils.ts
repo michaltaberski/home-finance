@@ -1,6 +1,7 @@
 import { first, groupBy, last, sortBy } from "lodash";
 import { SOURCES } from "./const";
 import { Operation, Source } from "./types";
+import { format } from "date-fns";
 
 export const roundNumber = (num: number) => Math.round(num * 100) / 100;
 
@@ -44,3 +45,35 @@ export const getStatisticsBySource = (
     {} as Record<Source, OperationsStatistics>
   );
 };
+
+// 2022-04-08 or 2022-04
+export const formatDate = (date?: string) => {
+  if (!date) return "-";
+
+  const [year, month, day = 0] = (date.split("-") || []).map((v) =>
+    parseInt(v)
+  );
+  const monthIndex = month - 1;
+  if (day === 0) {
+    return format(new Date(year, monthIndex), "MMM yyyy");
+  }
+  return format(new Date(year, monthIndex, day || undefined), "d MMM yyyy");
+};
+
+export const formatInt = (number?: number | string) => {
+  if (!number) return "-";
+  return parseInt("" + number).toLocaleString();
+};
+
+export const formatDecimal = (number?: number | string) => {
+  if (!number) return "-";
+  return parseInt("" + number).toLocaleString(
+    // leave undefined to use the visitor's browser
+    // locale or a string like 'en-US' to override it.
+    undefined,
+    { minimumFractionDigits: 2 }
+  );
+};
+
+export const formatCurrency = (number?: number | string) =>
+  formatDecimal(number) + " zł";

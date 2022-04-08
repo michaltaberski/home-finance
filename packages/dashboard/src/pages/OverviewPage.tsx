@@ -1,4 +1,6 @@
 import {
+  formatDate,
+  formatInt,
   getOperationsStatistics,
   getStatisticsBySource,
   toLabel,
@@ -34,13 +36,13 @@ export const OverviewPage = () => {
         <Col span={6}>
           <Statistic
             title="Najnowsza operacja"
-            value={globalStatistics.newest?.date || "-"}
+            value={formatDate(globalStatistics.newest?.date)}
           />
         </Col>
         <Col span={6}>
           <Statistic
             title="Najstarsza operacja"
-            value={globalStatistics.oldest?.date || "-"}
+            value={formatDate(globalStatistics.oldest?.date)}
           />
         </Col>
       </Row>
@@ -51,33 +53,35 @@ export const OverviewPage = () => {
           {
             title: "Źródło",
             dataIndex: "source",
-            render: (source) => toLabel(source),
+            render: (source) => <strong>{toLabel(source)}</strong>,
           },
           {
             title: "Liczba operacji",
             align: "right",
             width: 200,
             dataIndex: "operationsCount",
+            render: (count) => formatInt(count),
           },
           {
             title: "w tym bez kategorii",
             align: "right",
             width: 200,
             dataIndex: "operationsWithoutCategoryCount",
+            render: (count) => formatInt(count),
           },
           {
             title: "Od",
             align: "center",
             dataIndex: "oldest",
             width: 200,
-            render: (operation) => operation?.date || "-",
+            render: (operation) => formatDate(operation?.date),
           },
           {
             title: "Do",
             align: "center",
             dataIndex: "newest",
             width: 200,
-            render: (operation) => operation?.date || "-",
+            render: (operation) => formatDate(operation?.date),
           },
         ]}
         dataSource={Object.entries(statisticsBySource).map(

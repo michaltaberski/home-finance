@@ -3,6 +3,8 @@ import {
   Category,
   CATEGORY_TO_LABEL_MAP,
   FilterProps,
+  formatDate,
+  formatCurrency,
   Operation,
   Source,
   SOURCE_TO_LABEL_MAP,
@@ -90,13 +92,7 @@ export const OperationsTable = ({
         sortOrder: getSortOrder(filters, "amount"),
         render: (amount) => (
           <span style={{ color: amount > 0 ? green[6] : red[5] }}>
-            {amount.toLocaleString(
-              // leave undefined to use the visitor's browser
-              // locale or a string like 'en-US' to override it.
-              undefined,
-              { minimumFractionDigits: 2 }
-            )}{" "}
-            zł
+            {formatCurrency(amount)}
           </span>
         ),
       },
@@ -108,6 +104,7 @@ export const OperationsTable = ({
         defaultSortOrder: "descend",
         sorter: true,
         sortOrder: getSortOrder(filters, "date"),
+        render: (date) => formatDate(date),
       },
     ]}
     dataSource={dataSource}

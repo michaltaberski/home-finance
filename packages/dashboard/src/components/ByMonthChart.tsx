@@ -1,6 +1,7 @@
 import {
   Category,
   CATEGORY_TO_LABEL_MAP,
+  formatDate,
   Operation,
 } from "@home-finance/shared";
 import {
@@ -71,7 +72,7 @@ const groupedOeprationsToChartData = (
   groupedOeprations: GroupedOperations
 ): ChartDataFormat[] => {
   return Object.entries(groupedOeprations).map(([month, perCategory]) => ({
-    name: month,
+    name: formatDate(month),
     ...mapValues(perCategory, ({ balance }: SquashedOperations) =>
       Math.abs(balance)
     ),
