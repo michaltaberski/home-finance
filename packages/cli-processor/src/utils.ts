@@ -137,28 +137,17 @@ export const getOperationsFromFile = async (
       "id",
       "x4",
     ]);
-  if (source === Source.MBANK_PROACTIVUS)
-    return getRowsFromCsvFile(
-      filePath,
-      getMBankCsvRowToOperation(Source.MBANK_PROACTIVUS),
-      {
-        mapHeaders: ({ index }) =>
-          "date, description, account, _cat, amountString".split(", ")[index],
-        separator: ";",
-        skipLines: 25,
-      }
-    );
-  if (source === Source.MBANK_MICHAL)
-    return getRowsFromCsvFile(
-      filePath,
-      getMBankCsvRowToOperation(Source.MBANK_MICHAL),
-      {
-        mapHeaders: ({ index }) =>
-          "date, description, account, _cat, amountString".split(", ")[index],
-        separator: ";",
-        skipLines: 25,
-      }
-    );
+  if (
+    [Source.MBANK_ANETA, Source.MBANK_MICHAL, Source.MBANK_PROACTIVUS].includes(
+      source
+    )
+  )
+    return getRowsFromCsvFile(filePath, getMBankCsvRowToOperation(source), {
+      mapHeaders: ({ index }) =>
+        "date, description, account, _cat, amountString".split(", ")[index],
+      separator: ";",
+      skipLines: 25,
+    });
   if (source === Source.ING) {
     const KEYS = [
       "dataTransakcji",
