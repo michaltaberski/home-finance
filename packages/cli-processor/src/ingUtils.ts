@@ -1,17 +1,37 @@
 import { Operation, Source } from "@home-finance/shared";
 
-type IngCsvRow = {};
+type IngCsvRow = {
+  dataTransakcji: string;
+  dataKsiegowania: string;
+  daneKontrahenta: string;
+  tytul: string;
+  nrRachunku: string;
+  nazwaBanku: string;
+  szczegoly: string;
+  nrTransakcji: string;
+  kwotaTransakcji: string;
+  walutaTransakcji: string;
+  kwotaBlokady: string;
+  walutaBlokady: string;
+  kwotaPlatnosci: string;
+  walutaPlatnosci: string;
+  saldoPoTransakcji: string;
+  walutaSalda: string;
+};
 
-export const revoultCsvRowToOperation = (row: IngCsvRow): Operation | null => {
-  return null;
-  // return {
-  //   id: row["Started Date"].replace(/[\s\-\:]+/g, ""),
-  //   date: row["Started Date"].slice(0, 10),
-  //   source: Source.REVOLUT,
-  //   amount: parseFloat(row["Amount"]) - parseFloat(row["Fee"]),
-  //   description: row["Description"],
-  //   category: null,
-  //   balanceAfterOperation: parseFloat(row["Balance"]),
-  //   otherSide: null,
-  // };
+export const ingCsvRowToOperation = (row: IngCsvRow): Operation | null => {
+  if (!row.dataTransakcji || !row.saldoPoTransakcji) return null;
+  if (row.dataTransakcji && !row.nrTransakcji) {
+    console.log("row ", row);
+  }
+  return {
+    id: [row.dataTransakcji, row.saldoPoTransakcji].join(":"),
+    date: row.dataTransakcji,
+    source: Source.ING,
+    amount: parseFloat(row.kwotaTransakcji || row.kwotaBlokady),
+    description: row.tytul,
+    category: null,
+    balanceAfterOperation: parseFloat(row.saldoPoTransakcji),
+    otherSide: null,
+  };
 };

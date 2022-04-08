@@ -8,7 +8,7 @@ import { take } from "lodash";
 $.verbose = false;
 
 (async () => {
-  for (const source of [Source.SANTANDER_BANK]) {
+  for (const source of [Source.ING]) {
     const operations = await processInputDataBySource(source, {
       skipCategoryPrompt: true,
     });

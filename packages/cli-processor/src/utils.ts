@@ -23,6 +23,7 @@ import {
   Source,
 } from "@home-finance/shared";
 import { getDataPath, readTextFile } from "@home-finance/fs-utils";
+import { ingCsvRowToOperation } from "./ingUtils";
 
 const getAllegroTransactionsByDay = (date: string) => {
   console.log("FIXME");
@@ -158,6 +159,31 @@ export const getOperationsFromFile = async (
         skipLines: 25,
       }
     );
+  if (source === Source.ING) {
+    const KEYS = [
+      "dataTransakcji",
+      "dataKsiegowania",
+      "daneKontrahenta",
+      "tytul",
+      "nrRachunku",
+      "nazwaBanku",
+      "szczegoly",
+      "nrTransakcji",
+      "kwotaTransakcji",
+      "walutaTransakcji",
+      "kwotaBlokady",
+      "walutaBlokady",
+      "kwotaPlatnosci",
+      "walutaPlatnosci",
+      "saldoPoTransakcji",
+      "walutaSalda",
+    ];
+    return getRowsFromCsvFile(filePath, ingCsvRowToOperation, {
+      mapHeaders: ({ index }) => KEYS[index],
+      separator: ";",
+      skipLines: 19,
+    });
+  }
 
   return [];
 };

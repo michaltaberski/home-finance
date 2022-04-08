@@ -12,15 +12,24 @@ export type OperationsStatistics = {
   operationsCount: number;
   newest: Operation | null;
   oldest: Operation | null;
+  operationsWithoutCategoryCount: number;
 };
 
 export const getOperationsStatistics = (
   operations: Operation[]
 ): OperationsStatistics => {
   const sortedOperations = sortBy(operations, "date").reverse();
+  const operationsWithoutCategory = sortedOperations.filter(
+    ({ category }) => !category
+  );
   const newest = first(sortedOperations) || null;
   const oldest = last(sortedOperations) || null;
-  return { operationsCount: sortedOperations.length, newest, oldest };
+  return {
+    operationsCount: sortedOperations.length,
+    operationsWithoutCategoryCount: operationsWithoutCategory.length,
+    newest,
+    oldest,
+  };
 };
 
 export const getStatisticsBySource = (

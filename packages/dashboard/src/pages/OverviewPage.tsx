@@ -1,6 +1,7 @@
 import {
   getOperationsStatistics,
   getStatisticsBySource,
+  toLabel,
 } from "@home-finance/shared";
 import { Col, Divider, PageHeader, Row, Statistic, Table } from "antd";
 import { useStore } from "../useStore";
@@ -18,19 +19,25 @@ export const OverviewPage = () => {
         // subTitle="This is a subtitle"
       />
       <Row gutter={16}>
-        <Col span={8}>
+        <Col span={6}>
           <Statistic
-            title="Razem"
+            title="Razem operacji"
             value={globalStatistics.operationsCount || "-"}
           />
         </Col>
-        <Col span={8}>
+        <Col span={6}>
+          <Statistic
+            title="Operacje bez kategorii"
+            value={globalStatistics.operationsWithoutCategoryCount || "-"}
+          />
+        </Col>
+        <Col span={6}>
           <Statistic
             title="Najnowsza operacja"
             value={globalStatistics.newest?.date || "-"}
           />
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <Statistic
             title="Najstarsza operacja"
             value={globalStatistics.oldest?.date || "-"}
@@ -41,22 +48,35 @@ export const OverviewPage = () => {
       <Table
         pagination={false}
         columns={[
-          { title: "Źródło", dataIndex: "source" },
+          {
+            title: "Źródło",
+            dataIndex: "source",
+            render: (source) => toLabel(source),
+          },
           {
             title: "Liczba operacji",
             align: "right",
+            width: 200,
             dataIndex: "operationsCount",
           },
           {
-            title: "Najnowsza",
+            title: "w tym bez kategorii",
+            align: "right",
+            width: 200,
+            dataIndex: "operationsWithoutCategoryCount",
+          },
+          {
+            title: "Od",
             align: "center",
-            dataIndex: "newest",
+            dataIndex: "oldest",
+            width: 200,
             render: (operation) => operation?.date || "-",
           },
           {
-            title: "Najstarsza",
+            title: "Do",
             align: "center",
-            dataIndex: "oldest",
+            dataIndex: "newest",
+            width: 200,
             render: (operation) => operation?.date || "-",
           },
         ]}
