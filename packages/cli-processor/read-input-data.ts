@@ -8,10 +8,10 @@ import { take } from "lodash";
 $.verbose = false;
 
 (async () => {
-  for (const source of [Source.MBANK_MICHAL]) {
+  for (const source of [Source.SANTANDER_BANK]) {
     const operations = await processInputDataBySource(source, {
       skipCategoryPrompt: true,
     });
-    console.log(take(operations, 5));
+    console.log(take(operations.reverse(), 5));
   }
 })();

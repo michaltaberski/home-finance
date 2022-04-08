@@ -1,5 +1,6 @@
 import { $, fs } from "zx";
 import path from "path";
+const { writeFile } = fs.promises;
 
 $.verbose = false;
 
@@ -33,11 +34,11 @@ export const readJsonFile = async <T extends object>(
 };
 
 export const saveTextToFile = async (text: string, filePath: string) => {
-  await $`echo ${text} > ${getDataPath(filePath)}`;
+  await writeFile(getDataPath(filePath), text);
 };
 
 export const saveJsonToFile = async (json: any, filePath: string) => {
-  await $`echo ${JSON.stringify(json, null, 2)} > ${getDataPath(filePath)}`;
+  await writeFile(getDataPath(filePath), JSON.stringify(json, null, 2));
 };
 
 export const updateTextFile = async (

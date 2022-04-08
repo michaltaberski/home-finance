@@ -8,9 +8,10 @@ import { Source } from "@home-finance/shared";
 $.verbose = false;
 
 const SOURCES = [
-  // Source.REVOLUT,
-  // Source.INTELIGO,
-  // Source.SANTANDER_CREDIT_CARD,
+  Source.REVOLUT,
+  Source.INTELIGO,
+  Source.SANTANDER_CREDIT_CARD,
+  Source.SANTANDER_BANK,
   Source.MBANK_PROACTIVUS,
   Source.MBANK_MICHAL,
 ];

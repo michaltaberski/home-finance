@@ -4,8 +4,10 @@ import * as inquirer from "inquirer";
 import { keyBy, sortBy } from "lodash";
 import { revoultCsvRowToOperation } from "./revolutUtils";
 import { getRowsFromCsvFile } from "./csvUtils";
-import { santanderBankCsvRowToOperation } from "./santanderBankUtils";
-import { santanderCreditCardCsvRowToOperation } from "./santanderCreditCardUtils";
+import {
+  santanderBankCsvRowToOperation,
+  santanderCreditCardCsvRowToOperation,
+} from "./santanderUtils";
 import { getMBankCsvRowToOperation } from "./mBankUtils";
 import { categorySuggestion } from "./filterUtils";
 
@@ -111,7 +113,17 @@ export const getOperationsFromFile = async (
   if (source === Source.REVOLUT)
     return getRowsFromCsvFile(filePath, revoultCsvRowToOperation);
   if (source === Source.SANTANDER_BANK)
-    return getRowsFromCsvFile(filePath, santanderBankCsvRowToOperation);
+    return getRowsFromCsvFile(filePath, santanderBankCsvRowToOperation, [
+      "dataKsiegowania",
+      "dataTransakcji",
+      "tytulOperacji",
+      "x1",
+      "x2",
+      "kwota",
+      "x3",
+      "id",
+      "x4",
+    ]);
   if (source === Source.SANTANDER_CREDIT_CARD)
     return getRowsFromCsvFile(filePath, santanderCreditCardCsvRowToOperation, [
       "dataKsiegowania",
