@@ -10,13 +10,16 @@ type MBankCsvRow = {
 
 export const getMBankCsvRowToOperation =
   (source: Source) =>
-  ({ date, description, amountString }: MBankCsvRow): Operation | null => ({
-    id: [date, amountString.replace(/[\s,]/g, "-")].join(""),
-    source,
-    date,
-    description,
-    amount: parseFloat(amountString.replace(/\s/g, "").replace(/,/g, ".")),
-    category: null,
-    otherSide: null,
-    balanceAfterOperation: 0,
-  });
+  ({ date, description, amountString }: MBankCsvRow): Operation | null => {
+    if (!amountString) return null;
+    return {
+      id: [date, amountString.replace(/[\s,]/g, "-")].join(""),
+      source,
+      date,
+      description,
+      amount: parseFloat(amountString.replace(/\s/g, "").replace(/,/g, ".")),
+      category: null,
+      otherSide: null,
+      balanceAfterOperation: 0,
+    };
+  };

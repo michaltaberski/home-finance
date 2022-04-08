@@ -135,6 +135,18 @@ export const getOperationsFromFile = async (
         skipLines: 25,
       }
     );
+  if (source === Source.MBANK_MICHAL)
+    return getRowsFromCsvFile(
+      filePath,
+      getMBankCsvRowToOperation(Source.MBANK_MICHAL),
+      {
+        mapHeaders: ({ index }) =>
+          "date, description, account, _cat, amountString".split(", ")[index],
+        separator: ";",
+        skipLines: 25,
+      }
+    );
+
   return [];
 };
 

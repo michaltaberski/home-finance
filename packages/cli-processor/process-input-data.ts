@@ -7,7 +7,13 @@ import { Source } from "@home-finance/shared";
 
 $.verbose = false;
 
-const SOURCES = [Source.REVOLUT, Source.INTELIGO, Source.SANTANDER_CREDIT_CARD];
+const SOURCES = [
+  // Source.REVOLUT,
+  // Source.INTELIGO,
+  // Source.SANTANDER_CREDIT_CARD,
+  Source.MBANK_PROACTIVUS,
+  Source.MBANK_MICHAL,
+];
 
 (async () => {
   for (const source of SOURCES) {
