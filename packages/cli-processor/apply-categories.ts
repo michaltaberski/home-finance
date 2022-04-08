@@ -1,10 +1,17 @@
 #! ./node_modules/.bin/ts-node
 
 import { $, chalk } from "zx";
-import { Operation, SOURCES, toLabel } from "@home-finance/shared";
+import {
+  Category,
+  Operation,
+  Source,
+  SOURCES,
+  toLabel,
+} from "@home-finance/shared";
 import { concatOperations, readOutputData } from "./src/utils";
 import { categorySuggestion } from "./src/filterUtils";
 import { saveJsonToFile } from "@home-finance/fs-utils";
+import { without } from "lodash";
 
 $.verbose = false;
 
@@ -12,7 +19,12 @@ const operationToString = ({ source, description, amount }: Operation) =>
   [toLabel(source), description, amount].join(" | ");
 
 (async () => {
-  for (const source of SOURCES) {
+  for (const source of without(
+    SOURCES,
+    Source.MBANK_ANETA,
+    Source.MBANK_MICHAL,
+    Source.MBANK_PROACTIVUS
+  )) {
     const operationsFromCurrentOutputFile = await readOutputData(source);
     const operationsAfterUpdate =
       operationsFromCurrentOutputFile?.map((operation) => {
@@ -23,6 +35,7 @@ const operationToString = ({ source, description, amount }: Operation) =>
           (suggestedCategory && chalk.blue(suggestedCategory)) ||
           chalk.red(suggestedCategory);
         console.log(operationToString(operation), " | ", suggestedCategoryLog);
+
         return { ...operation, category: suggestedCategory };
       }) || [];
     await saveJsonToFile(operationsAfterUpdate, `output/${source}.json`);

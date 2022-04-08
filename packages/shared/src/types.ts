@@ -20,7 +20,7 @@ export enum Source {
 
 export enum Category {
   INTERNAL_MONEY_TRANSFER = "internal-money-transfer",
-  OTHER = "other",
+  OTHER_EXPENSE = "other-expense",
   TAX = "tax",
   NOBILIT = "nobilit",
   // ---
@@ -38,6 +38,7 @@ export enum Category {
   TRAVEL_AND_LEISURE = "travel-and-leisure",
   PRESENTS_AND_CHARITY = "presents-and-charity",
   BOOKS_AND_EDUCATION = "books-and-education",
+  MORTAGE = "mortage",
   // ---
   RETURN = "return",
   WORK_INCOME = "work-income",

@@ -20,8 +20,16 @@ const filterMap: FilterMap = {
   ],
   [Category.INTERNAL_MONEY_TRANSFER]: [
     "Spłata należności",
+    "Spłata zadłużenia karty kredytowej",
     "Revolut",
     "Przelew własny",
+    "PRZELEW WEWNĘTRZNY",
+    "Zwrot środków",
+    "50102055581111155936100080", // Inteligo account number
+    "33114020040000330272748296",
+    "17114020040000390250066780",
+    "91114020040000330275436480",
+    "NA RATE KREDYTU NA DOM",
   ],
   [Category.DINING_OUT]: [
     "Chlebak i Przyjaciele",
@@ -39,6 +47,8 @@ const filterMap: FilterMap = {
     "Sushi",
     "NORTH FISH",
     "PESTO PLEWISKA",
+    "LAURETTA ZBOROWO",
+    "SLODKI TARAS",
   ],
   [Category.HEALTH_AND_BEAUTY]: [
     "Apteka",
@@ -50,8 +60,14 @@ const filterMap: FilterMap = {
     "ROSSMANN",
     "BAK - MED",
   ],
-  [Category.KIDS]: ["Smyk", "Sala Zabaw Fikolki"],
-  [Category.CAR]: ["Orlen"],
+  [Category.KIDS]: [
+    "Smyk",
+    "Sala Zabaw Fikolki",
+    "PRZEDSZKOLE",
+    "MAGDA KUCAK",
+    "FREGATA SWIMMING",
+  ],
+  [Category.CAR]: ["Orlen", "WWW.MOBILET.PL", "CIRCLE K"],
   [Category.ENTERTAINMENT]: [
     "SPOTIFY",
     "CDA PL",
@@ -73,12 +89,48 @@ const filterMap: FilterMap = {
     "LPP MOHITO",
     "LPP RESERVED",
     "PRIMARK",
+    "LOVEMADE MAGDALENA KĘDZIORA",
+    "WWW.RESERVED.COM",
+    "WWW.LOVEMADE.PL",
+    "WWW.SIN-SAY.COM",
+    "MYBASIC.PL",
   ],
-  [Category.HOME]: ["Castorama", "Leroy Merlin"],
+  [Category.HOME]: [
+    "Castorama",
+    "Leroy Merlin",
+    "DACH BUD",
+    "SISTEMO",
+    "INVESTDOM-KMB",
+  ],
   [Category.HOUSEHOLD]: ["Pepco", "Homla"],
   [Category.BOOKS_AND_EDUCATION]: ["KSIEGARNIE", "KSIEGARNIA"],
-  [Category.OTHER]: ["Poczta Polska"],
+  [Category.OTHER_EXPENSE]: [
+    "Poczta Polska",
+    "OPŁATA PRZELEW ZEW.DOWOL.",
+    "OPŁATA-PRZELEW WEWN.",
+    "OPŁATA MIES. ZA POLECENIE ZAPŁATY",
+    "OPŁATA ZA KARTĘ",
+    "OPŁATA ZA PROWADZENIE RACHUNKU",
+  ],
   [Category.PRESENTS_AND_CHARITY]: ["KWIACIARNIA", "PAPIERNIK"],
+  [Category.WORK_INCOME]: ["UZNANIE NATYCH. TRANSAKCJA WALUT."],
+  [Category.OTHER_INCOME]: ["wiadczenie ZUS"],
+  [Category.TAX]: [
+    "PRZELEW ZEWNĘTRZNY DO ZUS",
+    "68600000020260015951416168", // ZUS
+    "88101000712222595141616800", // US
+    "BIURO RACHUNKOWE KOMPLEX",
+    "SKARBOWY POZNAŃ-NOWE MIASTO, VAT7K",
+    "SKARBOWY POZNAŃ-NOWE MIASTO, PIT-5L",
+  ],
+  [Category.NOBILIT]: ["JOLANTA GOLA", "VECTRA"],
+  [Category.MORTAGE]: [
+    "SPŁATA KREDYTU",
+    "RATA KREDYTU NR 002451153916",
+    "50/002451153916/000/00",
+    "2451153916SKŁADKA",
+    // Numer kredytu na DOM 2451153916
+  ],
 };
 
 export const categorySuggestion = (

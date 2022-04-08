@@ -26,7 +26,7 @@ export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.CAR]: "Samochód",
   [Category.ENTERTAINMENT]: "Rozrywka",
   [Category.GADGET]: "Gadzety",
-  [Category.OTHER]: "Inne",
+  [Category.OTHER_EXPENSE]: "Inne wydatki",
   [Category.CLOTHES]: "Odziez",
   [Category.HEALTH_AND_BEAUTY]: "Zdrowie i uroda",
   [Category.HOME]: "Dom",
@@ -36,9 +36,11 @@ export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.RETURN]: "Zwrot",
   [Category.NOBILIT]: "Nobilit",
   [Category.BOOKS_AND_EDUCATION]: "Edukacja i ksiązki",
+  [Category.MORTAGE]: "Kredyt hipoteczny",
 };
 
 export const CATEGORY_TO_COLOR_MAP: Record<Category, string> = {
+  [Category.MORTAGE]: "#ff0011",
   [Category.UTILITY_BILL]: "#b75ecd",
   [Category.FOOD]: "#73c461",
   [Category.DINING_OUT]: "#7a69da",
@@ -50,7 +52,7 @@ export const CATEGORY_TO_COLOR_MAP: Record<Category, string> = {
   [Category.CAR]: "#",
   [Category.ENTERTAINMENT]: "#",
   [Category.GADGET]: "#",
-  [Category.OTHER]: "#",
+  [Category.OTHER_EXPENSE]: "#",
   [Category.CLOTHES]: "#",
   [Category.HEALTH_AND_BEAUTY]: "#",
   [Category.HOME]: "#",
@@ -74,7 +76,7 @@ export const EXPENSE_CATGORIES = [
   Category.ENTERTAINMENT,
   Category.GADGET,
   Category.HEALTH_AND_BEAUTY,
-  Category.OTHER,
+  Category.OTHER_EXPENSE,
   Category.HOME,
   Category.TRAVEL_AND_LEISURE,
   Category.PRESENTS_AND_CHARITY,
