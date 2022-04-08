@@ -1,58 +1,48 @@
-import { Layout, Breadcrumb, Switch } from "antd";
+import { Layout, Breadcrumb, Menu } from "antd";
 import { Logo } from "./components/Logo";
-import { useFetch } from "./hooks";
-import { OperationsTable } from "./components/OperationsTable";
-import { Operation } from "@home-finance/shared";
-import { filterOperations } from "./utils";
+import { Link, Route, Routes } from "react-router-dom";
+import { OperationsPage } from "./pages/OperationsPage";
+import { OverviewPage } from "./pages/OverviewPage";
 import { useStore } from "./useStore";
-import { ByMonthChart } from "./components/ByMonthChart";
+import { useEffect } from "react";
 
 const { Header, Content, Footer } = Layout;
 
+const useLoadOperationsOnMount = () => {
+  const { loadOperations } = useStore();
+  useEffect(() => {
+    loadOperations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+};
+
 function App() {
-  const { filterProps, updateFilters } = useStore();
-  const { isLoading, result: operations } =
-    useFetch<Operation[]>("/all-operations");
-  const fiteredOperations = filterOperations(operations || [], filterProps);
+  useLoadOperationsOnMount();
   return (
     <Layout className="layout">
       <Header>
         <Logo />
-        {/*
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-          <Menu.Item>Dashboard</Menu.Item>
+        <Menu theme="dark" mode="horizontal" selectedKeys={[]}>
+          <Link to="/">
+            <Menu.Item>Operacje</Menu.Item>
+          </Link>
+          <Link to="/overview">
+            <Menu.Item>Overview</Menu.Item>
+          </Link>
         </Menu>
-        */}
       </Header>
       <Content style={{ padding: "0 50px" }}>
-        <Breadcrumb style={{ margin: "16px 0" }}>
-          {/* 
+        <Breadcrumb style={{ margin: "32px 0" }}>
+          {/*
           <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
           <Breadcrumb.Item>List</Breadcrumb.Item>
           <Breadcrumb.Item>App</Breadcrumb.Item>
-          */}
+        */}
         </Breadcrumb>
-        <div className="site-layout-content">
-          <ByMonthChart operations={fiteredOperations} />
-          <div
-            style={{ marginBottom: 24, display: "flex", justifyContent: "end" }}
-          >
-            <span style={{ marginRight: 8, fontSize: "0.9em" }}>
-              Załącz przelewy własne
-            </span>
-            <Switch
-              onChange={(includeInternalTransfers) => {
-                updateFilters({ includeInternalTransfers });
-              }}
-            />
-          </div>
-          <OperationsTable
-            isLoading={isLoading}
-            dataSource={fiteredOperations}
-            filters={filterProps}
-            onFilterChange={updateFilters}
-          />
-        </div>
+        <Routes>
+          <Route path="/" element={<OperationsPage />} />
+          <Route path="overview" element={<OverviewPage />} />
+        </Routes>
       </Content>
       <Footer style={{ textAlign: "center" }}>
         Created by{" "}

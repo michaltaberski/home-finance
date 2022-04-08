@@ -1,11 +1,14 @@
 import { Category, Source } from "./types";
 import { invert, mapValues } from "lodash";
+import { getEnumKeys } from "./utils";
 
 export const SOURCE_TO_LABEL_MAP: Record<Source, string> = {
   [Source.ING]: "ING",
   [Source.INTELIGO]: "Inteligo",
-  [Source.MBANK_COMPANY]: "mBank (Proactivus)",
-  [Source.MBANK_PRIVATE]: "mBank (Michał)",
+  [Source.MBANK_PROACTIVUS]: "mBank (Proactivus)",
+  [Source.MBANK_MICHAL]: "mBank (Michał)",
+  [Source.MBANK_ANETA]: "mBank (Aneta)",
+  [Source.CASH]: "Gotówka",
   [Source.REVOLUT]: "Revolut",
   [Source.SANTANDER_BANK]: "Santander",
   [Source.SANTANDER_CREDIT_CARD]: "Santander (karta kredytowa)",
@@ -92,3 +95,5 @@ export const INCOME_CATEGORIES = [
 export const LABEL_TO_CATEGORY_MAP = invert(
   mapValues(CATEGORY_TO_LABEL_MAP, (val) => val.toLowerCase())
 );
+
+export const SOURCES = getEnumKeys<Source>(Source);

@@ -5,6 +5,7 @@ import { Operation, Source } from "@home-finance/shared";
 export const getOperationsFromInteligoXmlFile = async (
   filePath: string
 ): Promise<Operation[]> => {
+
   const fileString = (await $`cat ${filePath}`).stdout.trim();
   const parsedXml = await xml2js.parseStringPromise(fileString);
   const rawOperationsXml =

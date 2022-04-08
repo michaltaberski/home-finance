@@ -7,7 +7,10 @@ import { Source } from "@home-finance/shared";
 $.verbose = false;
 
 (async () => {
-  for (const source of [Source.SANTANDER_CREDIT_CARD]) {
-    await processInputDataBySource(source, { skipCategoryPrompt: true });
+  for (const source of [Source.REVOLUT]) {
+    const z = await processInputDataBySource(source, {
+      skipCategoryPrompt: true,
+    });
+    console.log("z ", z.length);
   }
 })();

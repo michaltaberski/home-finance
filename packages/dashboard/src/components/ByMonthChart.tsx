@@ -1,18 +1,15 @@
 import {
   Category,
-  CATEGORY_TO_COLOR_MAP,
   CATEGORY_TO_LABEL_MAP,
   Operation,
 } from "@home-finance/shared";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { mapValues } from "lodash";

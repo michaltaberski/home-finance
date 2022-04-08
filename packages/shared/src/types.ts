@@ -7,13 +7,15 @@ export const ExcludeFalsy = Boolean as any as <T>(
 export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
 
 export enum Source {
+  ING = "ing",
   REVOLUT = "revolut",
   INTELIGO = "inteligo",
-  ING = "ing",
   SANTANDER_BANK = "santander-bank",
   SANTANDER_CREDIT_CARD = "santander-credit-card",
-  MBANK_PRIVATE = "mbank-private",
-  MBANK_COMPANY = "mbank-company",
+  MBANK_MICHAL = "mbank-michal",
+  MBANK_ANETA = "mbank-aneta",
+  MBANK_PROACTIVUS = "mbank-proactivus",
+  CASH = "cash",
 }
 
 export enum Category {
