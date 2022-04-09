@@ -1,4 +1,4 @@
-import { FilterProps, Operation } from "@home-finance/shared";
+import { FilterProps, Operation, OperationType } from "@home-finance/shared";
 import create from "zustand";
 
 type State = {
@@ -16,6 +16,7 @@ const deafultState: State = {
   isLoadingOperations: false,
   operations: [],
   filterProps: {
+    operationType: OperationType.EXPENSE,
     includeInternalTransfers: false,
     currentPage: 0,
     perPage: 10,

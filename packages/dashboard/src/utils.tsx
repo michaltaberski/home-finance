@@ -2,6 +2,7 @@ import {
   Category,
   FilterProps,
   Operation,
+  OperationType,
   roundNumber,
 } from "@home-finance/shared";
 import { groupBy } from "lodash";
@@ -12,6 +13,9 @@ export const filterOperations = (
 ) => {
   const { includeInternalTransfers } = filters;
   const categoryFilter = (operation: Operation) => {
+    if (operation.type !== filters.operationType) {
+      return false;
+    }
     if (
       !includeInternalTransfers &&
       operation.category === Category.INTERNAL_MONEY_TRANSFER

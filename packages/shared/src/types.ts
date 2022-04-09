@@ -66,6 +66,7 @@ export type Operation = {
 
 export type FilterProps = {
   includeInternalTransfers: boolean;
+  operationType: OperationType;
   perPage: number;
   currentPage: number;
   searchPhrase: string;

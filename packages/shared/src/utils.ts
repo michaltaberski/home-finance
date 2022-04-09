@@ -86,7 +86,8 @@ export const sanitzeString = (anyString: string) =>
     .replace(/\s+/g, " ")
     .replace("ĽCY", "ĄCY")
     .replace("RODKÓW", "ŚRODKÓW")
-    .replace("PŁATNOĆ", "PŁATNOŚĆ");
+    .replace("PŁATNOĆ", "PŁATNOŚĆ")
+    .replace("URZĽD", "URZĄD");
 
 export const sanitizeTitle = (anyString: string) =>
   truncate(sanitzeString(anyString), { length: 50 });

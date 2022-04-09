@@ -1,4 +1,5 @@
-import { PageHeader, Switch } from "antd";
+import { OperationType } from "@home-finance/shared";
+import { PageHeader, Radio, Switch } from "antd";
 import { ByMonthChart } from "../components/ByMonthChart";
 import { OperationsTable } from "../components/OperationsTable";
 import { useStore } from "../useStore";
@@ -24,7 +25,17 @@ export const OperationsPage = () => {
           justifyContent: "end",
         }}
       >
-        <span style={{ marginRight: 8, fontSize: "0.9em" }}>
+        <Radio.Group
+          value={filterProps.operationType}
+          onChange={(e) => {
+            const operationType = e.target.value as OperationType;
+            updateFilters({ operationType });
+          }}
+        >
+          <Radio.Button value={OperationType.EXPENSE}>Wydatki</Radio.Button>
+          <Radio.Button value={OperationType.INCOME}>Przychody</Radio.Button>
+        </Radio.Group>
+        <span style={{ margin: "0 8px", fontSize: "0.9em" }}>
           Załącz przelewy własne
         </span>
         <Switch

@@ -1,17 +1,13 @@
 #! ./node_modules/.bin/ts-node
 
-import { $ } from "zx";
+import { $, chalk } from "zx";
 import {
   CATEGORIES,
   CategorySuggestionMatch,
   Operation,
 } from "@home-finance/shared";
 import { readJsonFile, saveJsonToFile } from "@home-finance/fs-utils";
-import {
-  getSuggestion,
-  operationToString,
-  selectCategoryPrompt,
-} from "./src/utils";
+import { getSuggestion, selectCategoryPrompt } from "./src/utils";
 
 $.verbose = false;
 
@@ -29,8 +25,10 @@ $.verbose = false;
   });
 
   for (const operation of allOperations) {
-    if (getSuggestion(operation, categorySuggestionMatch)) {
-      console.log(operationToString(operation));
+    if (operation.title.toLowerCase().indexOf("allegro") !== -1) {
+      console.log(chalk.yellow("SKIP (Allegro)"));
+    } else if (getSuggestion(operation, categorySuggestionMatch)) {
+      console.log(chalk.green("DONE"));
     } else {
       const category = await selectCategoryPrompt(operation);
       if (category) {
