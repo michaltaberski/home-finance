@@ -8,15 +8,16 @@ import {
   SOURCES,
   toLabel,
 } from "@home-finance/shared";
-import { concatOperations, readOutputData } from "./src/utils";
+import {
+  concatOperations,
+  operationToString,
+  readOutputData,
+} from "./src/utils";
 import { categorySuggestion } from "./src/filterUtils";
 import { saveJsonToFile } from "@home-finance/fs-utils";
 import { without } from "lodash";
 
 $.verbose = false;
-
-const operationToString = ({ source, description, amount }: Operation) =>
-  [toLabel(source), description, amount].join(" | ");
 
 (async () => {
   for (const source of without(

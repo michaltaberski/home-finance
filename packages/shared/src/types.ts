@@ -75,3 +75,5 @@ export type FilterProps = {
   source: null | Source[];
   category: null | Category[];
 };
+
+export type CategorySuggestionMatch = Record<Category, string[]>;

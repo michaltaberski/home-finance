@@ -21,6 +21,10 @@ import {
   ExcludeFalsy,
   Operation,
   Source,
+  toLabel,
+  sanitizeTitle,
+  CategorySuggestionMatch,
+  formatCurrency,
 } from "@home-finance/shared";
 import { getDataPath, readTextFile } from "@home-finance/fs-utils";
 import { ingCsvRowToOperation } from "./ingUtils";
@@ -177,12 +181,15 @@ export const getOperationsFromFile = async (
   return [];
 };
 
-export const readOutputData = async (
-  source: Source
-): Promise<null | Operation[]> => {
-  const textContent = await readTextFile(`output/${source}.json`);
+export const readJsonFile = async <T>(path: string): Promise<null | T> => {
+  const textContent = await readTextFile(path);
   return JSON.parse(textContent);
 };
+
+export const readOutputData = async (
+  source: Source
+): Promise<null | Operation[]> =>
+  readJsonFile<Operation[]>(`output/${source}.json`);
 
 const sortOperations = (operations: Operation[], _source: Source) => {
   return sortBy(operations, ({ id }) => parseInt(id)).reverse();
@@ -243,4 +250,30 @@ export const concatOperations = async (sources: Source[]) => {
     []
   );
   return sortBy(allOperations, "date").reverse();
+};
+
+export const operationToString = ({
+  source,
+  description,
+  amount,
+  category,
+}: Operation) =>
+  [
+    toLabel(source),
+    sanitizeTitle(description),
+    formatCurrency(amount),
+    category || "---",
+  ].join(" | ");
+
+export const getSuggestion = (
+  operation: Operation,
+  suggestionMatch: CategorySuggestionMatch
+): Category | null => {
+  const [category] =
+    Object.entries(suggestionMatch).find(([category, suggestions]) => {
+      return suggestions.find(
+        (suggestion) => operation.title.indexOf(suggestion) !== -1
+      );
+    }) || [];
+  return (category as Category) || null;
 };

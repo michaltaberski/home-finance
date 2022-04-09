@@ -100,6 +100,8 @@ export const LABEL_TO_CATEGORY_MAP = invert(
 
 export const SOURCES = getEnumKeys<Source>(Source);
 
+export const CATEGORIES = getEnumKeys<Category>(Category);
+
 export const toLabel = (key: Source | Category): string =>
   // @ts-ignore
   CATEGORY_TO_LABEL_MAP[key] || SOURCE_TO_LABEL_MAP[key] || key;
