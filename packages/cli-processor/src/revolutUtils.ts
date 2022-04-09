@@ -1,4 +1,4 @@
-import { Operation, Source } from "@home-finance/shared";
+import { getOeprationType, Operation, Source } from "@home-finance/shared";
 
 type RevoultCsvRow = {
   Type: "CARD_PAYMENT" | "EXCHANGE" | "TRANSFER";
@@ -13,13 +13,18 @@ type RevoultCsvRow = {
   Balance: string;
 };
 
-export const revoultCsvRowToOperation = (row: RevoultCsvRow): Operation => ({
-  id: row["Started Date"].replace(/[\s\-\:]+/g, ""),
-  date: row["Started Date"].slice(0, 10),
-  source: Source.REVOLUT,
-  amount: parseFloat(row["Amount"]) - parseFloat(row["Fee"]),
-  description: row["Description"],
-  category: null,
-  balanceAfterOperation: parseFloat(row["Balance"]),
-  otherSide: null,
-});
+export const revoultCsvRowToOperation = (row: RevoultCsvRow): Operation => {
+  const amount = parseFloat(row["Amount"]) - parseFloat(row["Fee"]);
+  return {
+    id: row["Started Date"].replace(/[\s\-\:]+/g, ""),
+    date: row["Started Date"].slice(0, 10),
+    source: Source.REVOLUT,
+    amount,
+    type: getOeprationType(amount),
+    title: row["Description"],
+    description: row["Description"],
+    category: null,
+    balanceAfterOperation: parseFloat(row["Balance"]),
+    otherSide: null,
+  };
+};

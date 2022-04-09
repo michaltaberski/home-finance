@@ -97,8 +97,8 @@ export const getCliArgs = (): { [argKey: string]: string } => {
   return Object.fromEntries(
     process.argv
       .map((arg) => {
-        const [, key, value] = arg.match(/--([a-z-]+)=(.+)/) || [];
-        if (key) return [key, value];
+        const [, key, value] = arg.match(/--([a-z-]+)=?(.+)?/) || [];
+        if (key) return [key, value || true];
         return null;
       })
       .filter(ExcludeFalsy)
@@ -189,6 +189,7 @@ const sortOperations = (operations: Operation[], _source: Source) => {
 };
 
 type ProcessInputDataOptions = {
+  overwrite?: boolean;
   skipCategoryPrompt?: boolean;
 };
 
@@ -196,7 +197,7 @@ export const processInputDataBySource = async (
   source: Source,
   options?: ProcessInputDataOptions
 ): Promise<Operation[]> => {
-  const { skipCategoryPrompt = true } = options || {};
+  const { skipCategoryPrompt = true, overwrite = false } = options || {};
   const operations: Operation[] = [];
   const fileList = await getFilesListBySource(source);
   const operationsFromCurrentOutputFile = await readOutputData(source);
@@ -209,7 +210,7 @@ export const processInputDataBySource = async (
     const rawOperations = await getOperationsFromFile(filePath, source);
     for (const operation of rawOperations) {
       const { id } = operation;
-      if (currentOperations[id]) {
+      if (!overwrite && currentOperations[id]) {
         currentOperations[id];
         operations.push(
           skipCategoryPrompt

@@ -1,6 +1,6 @@
-import { first, groupBy, last, sortBy } from "lodash";
+import { first, groupBy, last, sortBy, truncate } from "lodash";
 import { SOURCES } from "./const";
-import { Operation, Source } from "./types";
+import { Operation, OperationType, Source } from "./types";
 import { format } from "date-fns";
 
 export const roundNumber = (num: number) => Math.round(num * 100) / 100;
@@ -77,3 +77,16 @@ export const formatDecimal = (number?: number | string) => {
 
 export const formatCurrency = (number?: number | string) =>
   formatDecimal(number) + " zł";
+
+export const getOeprationType = (amount: number) =>
+  amount > 0 ? OperationType.INCOME : OperationType.EXPENSE;
+
+export const sanitzeString = (anyString: string) =>
+  anyString
+    .replace(/\s+/g, " ")
+    .replace("ĽCY", "ĄCY")
+    .replace("RODKÓW", "ŚRODKÓW")
+    .replace("PŁATNOĆ", "PŁATNOŚĆ");
+
+export const sanitizeTitle = (anyString: string) =>
+  truncate(sanitzeString(anyString), { length: 50 });

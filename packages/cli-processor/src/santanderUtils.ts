@@ -1,4 +1,4 @@
-import { Operation, Source } from "@home-finance/shared";
+import { getOeprationType, Operation, Source } from "@home-finance/shared";
 
 type SantanderBankRow = {
   id: string;
@@ -23,11 +23,14 @@ const santanderBankRowToOperation = (
   source: Source
 ): Operation | null => {
   if (!row.kwota) return null;
+  const amount = parseFloat(row.kwota.replace(",", "."));
   return {
     id: getUniqSortableId(row),
     date: toIsoDate(row.dataTransakcji),
     source,
-    amount: parseFloat(row.kwota.replace(",", ".")),
+    amount,
+    type: getOeprationType(amount),
+    title: row.tytulOperacji,
     description: row.tytulOperacji,
     category: null,
     balanceAfterOperation: 0,

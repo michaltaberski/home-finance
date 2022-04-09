@@ -45,11 +45,18 @@ export enum Category {
   OTHER_INCOME = "other-income",
 }
 
+export enum OperationType {
+  INCOME = "income",
+  EXPENSE = "expense",
+}
+
 export type Operation = {
   id: string;
   date: string;
   source: Source;
   amount: number;
+  type: OperationType;
+  title: string;
   description: string;
   otherSide: string | null;
   category: Category | null;
