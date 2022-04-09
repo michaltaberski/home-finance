@@ -35,6 +35,44 @@ const getAllegroTransactionsByDay = (date: string) => {
   // return allegroTransactions[date];
 };
 
+export const selectCategoryPrompt = async (
+  operation: Operation
+): Promise<Category | null> => {
+  const CATEGORIES =
+    operation.amount > 0 ? INCOME_CATEGORIES : EXPENSE_CATGORIES;
+  const categoryLabel = (
+    await inquirer.prompt([
+      {
+        type: "list",
+        name: "category",
+        message: [
+          operationToString(operation),
+          ...(operation.description.toLowerCase().match("allegro")
+            ? [
+                "------- Allegro from that day -------",
+                JSON.stringify(
+                  getAllegroTransactionsByDay(operation.date),
+                  null,
+                  2
+                ),
+                "",
+              ]
+            : []),
+        ].join("\n"),
+
+        choices: [
+          "---",
+          ...CATEGORIES.map((category) => CATEGORY_TO_LABEL_MAP[category]),
+        ],
+        filter: (val) => val.toLowerCase(),
+      },
+    ])
+  ).category;
+  return categoryLabel === "---"
+    ? null
+    : (LABEL_TO_CATEGORY_MAP[categoryLabel] as Category);
+};
+
 export const selectCategoryForOperation = async (
   operation: Operation,
   source: Source
