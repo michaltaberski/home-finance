@@ -7,6 +7,7 @@
     "read-input-data": "./node_modules/.bin/ts-node read-input-data.ts",
     "read-allegro": "./node_modules/.bin/ts-node read-allegro.ts",
     "apply-categories": "./node_modules/.bin/ts-node apply-categories.ts",
+    "generate-category-suggestion-match":"./node_modules/.bin/ts-node generate-category-suggestion-match.ts",
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {

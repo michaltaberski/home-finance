@@ -1,36 +1,32 @@
 #! ./node_modules/.bin/ts-node
 
 import { $, chalk } from "zx";
-import {
-  Category,
-  Operation,
-  Source,
-  SOURCES,
-  toLabel,
-} from "@home-finance/shared";
+import { CategorySuggestionMatch, Source, SOURCES } from "@home-finance/shared";
 import {
   concatOperations,
+  getSuggestion,
   operationToString,
   readOutputData,
 } from "./src/utils";
-import { categorySuggestion } from "./src/filterUtils";
-import { saveJsonToFile } from "@home-finance/fs-utils";
-import { without } from "lodash";
+import { readJsonFile, saveJsonToFile } from "@home-finance/fs-utils";
 
 $.verbose = false;
 
 (async () => {
-  for (const source of without(
-    SOURCES,
-    Source.MBANK_ANETA,
-    Source.MBANK_MICHAL,
-    Source.MBANK_PROACTIVUS
-  )) {
+  const categorySuggestionMatch =
+    (await readJsonFile<CategorySuggestionMatch>(
+      "output/category-match.json"
+    )) || ({} as CategorySuggestionMatch);
+
+  for (const source of SOURCES) {
     const operationsFromCurrentOutputFile = await readOutputData(source);
     const operationsAfterUpdate =
       operationsFromCurrentOutputFile?.map((operation) => {
         if (operation.category) return operation;
-        const suggestedCategory = categorySuggestion(operation, source);
+        const suggestedCategory = getSuggestion(
+          operation,
+          categorySuggestionMatch
+        );
         const suggestedCategoryLog =
           (operation.category && chalk.green(operation.category)) ||
           (suggestedCategory && chalk.blue(suggestedCategory)) ||

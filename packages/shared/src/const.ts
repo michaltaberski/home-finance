@@ -19,6 +19,7 @@ export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.FOOD]: "Jedzenie",
   [Category.DINING_OUT]: "Jedzenie na mieście",
   [Category.HOUSEHOLD]: "Gospodarstwo domowe",
+  [Category.HOME]: "Dom (budowa i utrzymanie)",
   [Category.KIDS]: "Dzieci",
   [Category.INTERNAL_MONEY_TRANSFER]: "Przelew własny",
   [Category.WORK_INCOME]: "Dochód z pracy",
@@ -29,7 +30,6 @@ export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.OTHER_EXPENSE]: "Inne wydatki",
   [Category.CLOTHES]: "Odziez",
   [Category.HEALTH_AND_BEAUTY]: "Zdrowie i uroda",
-  [Category.HOME]: "Dom",
   [Category.TRAVEL_AND_LEISURE]: "Podróze i wypoczynek",
   [Category.PRESENTS_AND_CHARITY]: "Prezenty i pomoc",
   [Category.TAX]: "Podatek",
@@ -37,6 +37,7 @@ export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.NOBILIT]: "Nobilit",
   [Category.BOOKS_AND_EDUCATION]: "Edukacja i ksiązki",
   [Category.MORTAGE]: "Kredyt hipoteczny",
+  [Category.CASH_WITHDRAW]: "Wypłata gotówki",
 };
 
 export const CATEGORY_TO_COLOR_MAP: Record<Category, string> = {
@@ -62,6 +63,7 @@ export const CATEGORY_TO_COLOR_MAP: Record<Category, string> = {
   [Category.RETURN]: "#",
   [Category.NOBILIT]: "#",
   [Category.BOOKS_AND_EDUCATION]: "#",
+  [Category.CASH_WITHDRAW]: "#",
 };
 
 export const EXPENSE_CATGORIES = [
@@ -83,6 +85,8 @@ export const EXPENSE_CATGORIES = [
   Category.TAX,
   Category.NOBILIT,
   Category.BOOKS_AND_EDUCATION,
+  Category.CASH_WITHDRAW,
+  Category.MORTAGE,
 ];
 
 export const INCOME_CATEGORIES = [

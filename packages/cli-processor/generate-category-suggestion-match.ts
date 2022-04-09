@@ -10,7 +10,6 @@ import { readJsonFile, saveJsonToFile } from "@home-finance/fs-utils";
 import {
   getSuggestion,
   operationToString,
-  selectCategoryForOperation,
   selectCategoryPrompt,
 } from "./src/utils";
 
@@ -35,7 +34,7 @@ $.verbose = false;
     } else {
       const category = await selectCategoryPrompt(operation);
       if (category) {
-        categorySuggestionMatch[category].push(operation.title);
+        categorySuggestionMatch[category].push(operation.title.toLowerCase());
         await saveJsonToFile(
           categorySuggestionMatch,
           "output/category-match.json"

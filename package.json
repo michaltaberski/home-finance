@@ -13,7 +13,8 @@
     "read-allegro": "yarn workspace @home-finance/cli-processor read-allegro",
     "read-input-data": "yarn workspace @home-finance/cli-processor read-input-data",
     "process-input-data": "yarn workspace @home-finance/cli-processor process-input-data",
-    "apply-categories": "yarn workspace @home-finance/cli-processor apply-categories"
+    "apply-categories": "yarn workspace @home-finance/cli-processor apply-categories",
+    "generate-category-suggestion-match": "yarn workspace @home-finance/cli-processor generate-category-suggestion-match"
   },
   "workspaces": {
     "packages": [

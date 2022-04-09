@@ -23,6 +23,7 @@ export enum Category {
   OTHER_EXPENSE = "other-expense",
   TAX = "tax",
   NOBILIT = "nobilit",
+  CASH_WITHDRAW = "cash-withdrawal",
   // ---
   FOOD = "food",
   DINING_OUT = "dining-out",

@@ -308,9 +308,10 @@ export const getSuggestion = (
   suggestionMatch: CategorySuggestionMatch
 ): Category | null => {
   const [category] =
-    Object.entries(suggestionMatch).find(([category, suggestions]) => {
+    Object.entries(suggestionMatch).find(([_category, suggestions]) => {
       return suggestions.find(
-        (suggestion) => operation.title.indexOf(suggestion) !== -1
+        (suggestion) =>
+          operation.title.toLowerCase().indexOf(suggestion.toLowerCase()) !== -1
       );
     }) || [];
   return (category as Category) || null;
