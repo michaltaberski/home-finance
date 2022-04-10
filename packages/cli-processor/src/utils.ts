@@ -1,4 +1,4 @@
-import { $ } from "zx";
+import { $, chalk } from "zx";
 import { getOperationsFromInteligoXmlFile } from "./inteligoUtils";
 import * as inquirer from "inquirer";
 import { keyBy, sortBy } from "lodash";
@@ -25,6 +25,7 @@ import {
   sanitizeTitle,
   CategorySuggestionMatch,
   formatCurrency,
+  sanitzeString,
 } from "@home-finance/shared";
 import { getDataPath, readTextFile } from "@home-finance/fs-utils";
 import { ingCsvRowToOperation } from "./ingUtils";
@@ -291,14 +292,18 @@ export const concatOperations = async (sources: Source[]) => {
 };
 
 export const operationToString = ({
+  date,
   source,
   description,
   amount,
   category,
+  otherSide,
 }: Operation) =>
   [
+    date,
     toLabel(source),
     sanitizeTitle(description),
+    sanitzeString(otherSide || ""),
     formatCurrency(amount),
     category || "---",
   ].join(" | ");
@@ -309,10 +314,29 @@ export const getSuggestion = (
 ): Category | null => {
   const [category] =
     Object.entries(suggestionMatch).find(([_category, suggestions]) => {
-      return suggestions.find(
-        (suggestion) =>
-          operation.title.toLowerCase().indexOf(suggestion.toLowerCase()) !== -1
-      );
+      return suggestions.find((suggestion) => {
+        // console.log(
+        //   chalk.redBright(
+        //     [operation.title, operation.otherSide, operation.description].join(
+        //       " "
+        //     )
+        //   )
+        // );
+        // console.log(chalk.greenBright(suggestion.toLowerCase()));
+        // console.log(
+        //   [operation.title, operation.otherSide, operation.description]
+        //     .join(" ")
+        //     .toLowerCase()
+        //     .indexOf(suggestion.toLowerCase()) !== -1
+        // );
+
+        return (
+          [operation.title, operation.otherSide, operation.description]
+            .join(" ")
+            .toLowerCase()
+            .indexOf(suggestion.toLowerCase()) !== -1
+        );
+      });
     }) || [];
   return (category as Category) || null;
 };

@@ -8,6 +8,7 @@ import {
 } from "@home-finance/shared";
 import { readJsonFile, saveJsonToFile } from "@home-finance/fs-utils";
 import { getSuggestion, selectCategoryPrompt } from "./src/utils";
+import inquirer from "inquirer";
 
 $.verbose = false;
 
@@ -32,7 +33,15 @@ $.verbose = false;
     } else {
       const category = await selectCategoryPrompt(operation);
       if (category) {
-        categorySuggestionMatch[category].push(operation.title.toLowerCase());
+        const proposition = [operation.title, operation.otherSide]
+          .join(" ")
+          .toLowerCase();
+        const { suggestion } = await inquirer.prompt({
+          name: "suggestion",
+          type: "input",
+          default: proposition,
+        });
+        categorySuggestionMatch[category].push(suggestion.toLowerCase());
         await saveJsonToFile(
           categorySuggestionMatch,
           "output/category-match.json"
