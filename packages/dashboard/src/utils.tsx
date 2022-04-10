@@ -2,7 +2,6 @@ import {
   Category,
   FilterProps,
   Operation,
-  OperationType,
   roundNumber,
 } from "@home-finance/shared";
 import { groupBy } from "lodash";
@@ -31,6 +30,16 @@ export const filterOperations = (
     return filters.source.includes(operation.source);
   };
 
+  const filterByDate = (operation: Operation) => {
+    const operationMonth = operation.date.substring(0, 7);
+    const filterFrom = filters.date.from;
+    const filterTo = filters.date.to;
+    return (
+      (!filterFrom || operationMonth >= filterFrom) &&
+      (!filterTo || operationMonth <= filterTo)
+    );
+  };
+
   const sorter = (a: Operation, b: Operation) => {
     const { sortBy, sortOrder } = filters;
     const isAsc = sortOrder === "ascend";
@@ -40,7 +49,11 @@ export const filterOperations = (
     if ((a[sortBy] || "") < (b[sortBy] || "")) return isAsc ? -1 : 1;
     return 0;
   };
-  return operations.filter(categoryFilter).filter(sourceFilter).sort(sorter);
+  return operations
+    .filter(categoryFilter)
+    .filter(sourceFilter)
+    .filter(filterByDate)
+    .sort(sorter);
 };
 
 export const groupOperationsByMonth = (operations: Operation[]) => {

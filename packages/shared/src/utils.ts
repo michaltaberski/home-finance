@@ -67,7 +67,7 @@ export const formatInt = (number?: number | string) => {
 
 export const formatDecimal = (number?: number | string) => {
   if (!number) return "-";
-  return parseInt("" + number).toLocaleString(
+  return parseFloat("" + number).toLocaleString(
     // leave undefined to use the visitor's browser
     // locale or a string like 'en-US' to override it.
     undefined,
