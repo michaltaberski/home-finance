@@ -15,7 +15,7 @@ import { SorterResult } from "antd/lib/table/interface";
 
 export type OperationsTableProps = {
   isLoading?: boolean;
-  dataSource: Operation[];
+  operations: Operation[];
   onFilterChange?: (filters: Partial<FilterProps>) => void;
   filters: Partial<FilterProps>;
 };
@@ -27,7 +27,7 @@ const getSortOrder = (filters: Partial<FilterProps>, key: keyof Operation) => {
 
 export const OperationsTable = ({
   filters,
-  dataSource,
+  operations,
   isLoading,
   onFilterChange,
 }: OperationsTableProps) => (
@@ -107,6 +107,6 @@ export const OperationsTable = ({
         render: (date) => formatDate(date),
       },
     ]}
-    dataSource={dataSource}
+    dataSource={operations}
   />
 );

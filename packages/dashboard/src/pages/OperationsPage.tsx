@@ -40,7 +40,6 @@ export const OperationsPage = () => {
               updateFilters({ date: { from, to } });
             }}
           />
-
           <Radio.Group
             value={filterProps.operationType}
             onChange={(e) => {
@@ -63,7 +62,7 @@ export const OperationsPage = () => {
       </div>
       <OperationsTable
         isLoading={isLoadingOperations}
-        dataSource={fiteredOperations}
+        operations={fiteredOperations}
         filters={filterProps}
         onFilterChange={updateFilters}
       />

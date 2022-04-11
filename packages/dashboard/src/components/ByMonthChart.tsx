@@ -16,8 +16,16 @@ import {
   squashOperations,
 } from "../utils";
 import { ResponsiveBar } from "@nivo/bar";
+import moment from "moment";
 
 type ByMonthChartProps = {
+  onChartSegmentClick: ({
+    category,
+    month,
+  }: {
+    category: Category;
+    month: string;
+  }) => void;
   operations: Operation[];
   operationType: OperationType;
 };
@@ -53,6 +61,7 @@ const groupedOeprationsToChartData = (
 };
 
 export const ByMonthChart = ({
+  onChartSegmentClick,
   operations,
   operationType,
 }: ByMonthChartProps) => {
@@ -70,8 +79,9 @@ export const ByMonthChart = ({
         keys={KEYS}
         indexBy="name"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-        onClick={(x) => {
-          alert(JSON.stringify(x, null, 2));
+        onClick={({ id, indexValue }) => {
+          const month = moment(indexValue, "MMM YYYY").format("YYYY-MM");
+          onChartSegmentClick({ category: id as Category, month });
         }}
         legendLabel={({ id }) => toLabel(id as Category)}
         label={({ id, data }) =>
