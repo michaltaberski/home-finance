@@ -1,4 +1,10 @@
-import { Category, Operation, OperationType } from "@home-finance/shared";
+import {
+  Category,
+  formatDate,
+  Operation,
+  OperationType,
+  toLabel,
+} from "@home-finance/shared";
 import { Radio, Switch, DatePicker, Space } from "antd";
 import moment from "moment";
 import { useState } from "react";
@@ -13,6 +19,7 @@ const MONTH_FORMAT = "YYYY-MM";
 
 const useOpenModal = (operations: Operation[]) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
   const [modalOperations, setModalOperations] = useState<Operation[]>([]);
   const openModal = ({
     category,
@@ -22,6 +29,7 @@ const useOpenModal = (operations: Operation[]) => {
     month: string;
   }) => {
     setIsModalVisible(true);
+    setModalTitle(`${toLabel(category)} in ${formatDate(month)}`);
     setModalOperations(
       operations.filter(
         (o) => o.category === category && o.date.substring(0, 7) === month
@@ -32,19 +40,21 @@ const useOpenModal = (operations: Operation[]) => {
     isModalVisible,
     openModal,
     modalOperations,
+    modalTitle,
     closeModal: () => setIsModalVisible(false),
   };
 };
 
 export const ChartPage = () => {
   const { filterProps, updateFilters, operations } = useStore();
-  const { isModalVisible, openModal, modalOperations, closeModal } =
+  const { isModalVisible, openModal, modalOperations, closeModal, modalTitle } =
     useOpenModal(operations);
 
   const fiteredOperations = filterOperations(operations || [], filterProps);
   return (
     <div className="site-layout-content">
       <OperationsModal
+        modalTitle={modalTitle}
         operations={modalOperations}
         isVisible={isModalVisible}
         onClose={closeModal}
