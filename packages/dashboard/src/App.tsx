@@ -2,6 +2,7 @@ import { Layout, Breadcrumb, Menu } from "antd";
 import { Logo } from "./components/Logo";
 import { Link, Route, Routes } from "react-router-dom";
 import { OperationsPage } from "./pages/OperationsPage";
+import { ChartPage } from "./pages/ChartPage";
 import { OverviewPage } from "./pages/OverviewPage";
 import { useStore } from "./useStore";
 import { useEffect } from "react";
@@ -26,6 +27,9 @@ function App() {
           <Link to="/">
             <Menu.Item>Operacje</Menu.Item>
           </Link>
+          <Link to="/chart">
+            <Menu.Item>Wykres</Menu.Item>
+          </Link>
           <Link to="/overview">
             <Menu.Item>Overview</Menu.Item>
           </Link>
@@ -41,6 +45,7 @@ function App() {
         </Breadcrumb>
         <Routes>
           <Route path="/" element={<OperationsPage />} />
+          <Route path="chart" element={<ChartPage />} />
           <Route path="overview" element={<OverviewPage />} />
         </Routes>
       </Content>

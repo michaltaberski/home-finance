@@ -1,7 +1,7 @@
 import { OperationType } from "@home-finance/shared";
 import { Radio, Switch, DatePicker, Space } from "antd";
 import moment from "moment";
-import { OperationsTable } from "../components/OperationsTable";
+import { ByMonthChart } from "../components/ByMonthChart";
 import { useStore } from "../useStore";
 import { filterOperations } from "../utils";
 
@@ -9,20 +9,12 @@ const { RangePicker } = DatePicker;
 
 const MONTH_FORMAT = "YYYY-MM";
 
-export const OperationsPage = () => {
-  const { filterProps, updateFilters, operations, isLoadingOperations } =
-    useStore();
-
+export const ChartPage = () => {
+  const { filterProps, updateFilters, operations } = useStore();
   const fiteredOperations = filterOperations(operations || [], filterProps);
   return (
     <div className="site-layout-content">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "end",
-          marginBottom: 24,
-        }}
-      >
+      <div style={{ display: "flex", justifyContent: "end" }}>
         <Space>
           <RangePicker
             picker="month"
@@ -36,7 +28,6 @@ export const OperationsPage = () => {
                 : null,
             ]}
             onCalendarChange={(_moment, [from, to]) => {
-              console.log("from, to ", from, to);
               updateFilters({ date: { from, to } });
             }}
           />
@@ -61,11 +52,9 @@ export const OperationsPage = () => {
           />
         </Space>
       </div>
-      <OperationsTable
-        isLoading={isLoadingOperations}
-        dataSource={fiteredOperations}
-        filters={filterProps}
-        onFilterChange={updateFilters}
+      <ByMonthChart
+        operations={fiteredOperations}
+        operationType={filterProps.operationType}
       />
     </div>
   );

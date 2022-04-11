@@ -1,18 +1,13 @@
 import {
   Category,
-  CATEGORY_TO_LABEL_MAP,
+  EXPENSE_CATGORIES,
+  formatCurrency,
   formatDate,
+  INCOME_CATEGORIES,
   Operation,
+  OperationType,
+  toLabel,
 } from "@home-finance/shared";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 import { mapValues } from "lodash";
 import {
   groupOperationsByCategory,
@@ -20,33 +15,11 @@ import {
   SquashedOperations,
   squashOperations,
 } from "../utils";
-
-const colors = [
-  "#00429d",
-  "#2854a6",
-  "#3e67ae",
-  "#507bb7",
-  "#618fbf",
-  "#73a2c6",
-  "#85b7ce",
-  "#9acbd5",
-  "#b1dfdb",
-  "#cdf1e0",
-  "#ffffe0",
-  "#ffe5cc",
-  "#ffcab9",
-  "#ffaea5",
-  "#fd9291",
-  "#f4777f",
-  "#e75d6f",
-  "#d84360",
-  "#c52a52",
-  "#ae1045",
-  "#93003a",
-];
+import { ResponsiveBar } from "@nivo/bar";
 
 type ByMonthChartProps = {
   operations: Operation[];
+  operationType: OperationType;
 };
 
 type GroupedOperations = {
@@ -79,34 +52,118 @@ const groupedOeprationsToChartData = (
   }));
 };
 
-export const ByMonthChart = ({ operations }: ByMonthChartProps) => {
+export const ByMonthChart = ({
+  operations,
+  operationType,
+}: ByMonthChartProps) => {
   const groupedOeprations = groupOeprations(operations);
   const chartData = groupedOeprationsToChartData(groupedOeprations);
+  const KEYS =
+    operationType === OperationType.EXPENSE
+      ? EXPENSE_CATGORIES.reverse()
+      : INCOME_CATEGORIES;
 
   return (
-    <div style={{ height: 500, marginBottom: 8 }}>
-      {/* <pre>{JSON.stringify(z, null, 2)}</pre> */}
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          width={500}
-          height={300}
-          data={chartData}
-          margin={{
-            top: 20,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          {Object.keys(CATEGORY_TO_LABEL_MAP).map((cetegory, i) => (
-            <Bar dataKey={cetegory} stackId="a" fill={colors[i]} />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
+    <div style={{ height: 700, marginBottom: 8 }}>
+      <ResponsiveBar
+        data={chartData}
+        keys={KEYS}
+        indexBy="name"
+        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        onClick={(x) => {
+          alert(JSON.stringify(x, null, 2));
+        }}
+        legendLabel={({ id }) => toLabel(id as Category)}
+        label={({ id, data }) =>
+          `${toLabel(id as Category)}  ${formatCurrency(data[id as Category])}`
+        }
+        padding={0.3}
+        // valueScale={{ type: "linear" }}
+        // indexScale={{ type: "band", round: true }}
+        colors={{ scheme: "nivo" }}
+        // defs={[
+        //   {
+        //     id: "dots",
+        //     type: "patternDots",
+        //     background: "inherit",
+        //     color: "#38bcb2",
+        //     size: 4,
+        //     padding: 1,
+        //     stagger: true,
+        //   },
+        //   {
+        //     id: "lines",
+        //     type: "patternLines",
+        //     background: "inherit",
+        //     color: "#eed312",
+        //     rotation: -45,
+        //     lineWidth: 6,
+        //     spacing: 10,
+        //   },
+        // ]}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 1.6]],
+        }}
+        // axisTop={null}
+        // axisRight={null}
+        // axisBottom={{
+        //   tickSize: 5,
+        //   tickPadding: 5,
+        //   tickRotation: 0,
+        //   legendPosition: "middle",
+        //   legendOffset: 32,
+        // }}
+        // axisLeft={{
+        //   tickSize: 5,
+        //   tickPadding: 5,
+        //   tickRotation: 0,
+        //   legendPosition: "middle",
+        //   legendOffset: -40,
+        // }}
+        // labelSkipWidth={12}
+        labelSkipHeight={18}
+        labelTextColor={{
+          from: "color",
+          modifiers: [["darker", 1.6]],
+        }}
+        tooltip={() => null}
+        legends={[
+          {
+            onClick: (x) => {
+              console.log(JSON.stringify(x, null, 2));
+            },
+            toggleSerie: true,
+            dataFrom: "keys",
+            anchor: "bottom-right",
+            direction: "column",
+            justify: false,
+            translateX: 120,
+            translateY: 0,
+            itemsSpacing: 2,
+            itemWidth: 100,
+            itemHeight: 20,
+            itemDirection: "left-to-right",
+            itemOpacity: 0.85,
+            symbolSize: 20,
+            effects: [
+              {
+                on: "hover",
+                style: {
+                  itemOpacity: 1,
+                },
+              },
+            ],
+          },
+        ]}
+        role="application"
+        ariaLabel="Nivo bar chart demo"
+        barAriaLabel={function (e) {
+          return (
+            e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+          );
+        }}
+      />
     </div>
   );
 };
