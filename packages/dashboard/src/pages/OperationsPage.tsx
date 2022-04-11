@@ -1,5 +1,6 @@
 import { OperationType } from "@home-finance/shared";
 import { PageHeader, Radio, Switch, DatePicker, Space } from "antd";
+import { ByMonthChart2 } from "../components/ByMonthChart2";
 import { ByMonthChart } from "../components/ByMonthChart";
 import { OperationsTable } from "../components/OperationsTable";
 import { useStore } from "../useStore";
@@ -19,7 +20,7 @@ export const OperationsPage = () => {
         title="Operacje"
         // subTitle="This is a subtitle"
       />
-      <ByMonthChart operations={fiteredOperations} />
+      <ByMonthChart2 operations={fiteredOperations} />
       <div
         style={{
           marginBottom: 24,

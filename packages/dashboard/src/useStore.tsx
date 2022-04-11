@@ -22,7 +22,7 @@ const deafultState: State = {
     perPage: 10,
     searchPhrase: "",
     amount: { from: null, to: null },
-    date: { from: null, to: null },
+    date: { from: "2022-01", to: "2022-03" },
     sortBy: "date",
     sortOrder: undefined,
     source: null,

@@ -15,11 +15,11 @@ export const SOURCE_TO_LABEL_MAP: Record<Source, string> = {
 };
 
 export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
-  [Category.UTILITY_BILL]: "Rachunek za media",
+  [Category.UTILITY_BILL]: "Media",
   [Category.FOOD]: "Jedzenie",
   [Category.DINING_OUT]: "Jedzenie na mieście",
-  [Category.HOUSEHOLD]: "Gospodarstwo domowe",
-  [Category.HOME]: "Dom (budowa i utrzymanie)",
+  [Category.HOUSEHOLD]: "Dom (utrzymanie)",
+  [Category.HOME]: "Dom (budowa)",
   [Category.KIDS]: "Dzieci",
   [Category.INTERNAL_MONEY_TRANSFER]: "Przelew własny",
   [Category.WORK_INCOME]: "Dochód z pracy",
