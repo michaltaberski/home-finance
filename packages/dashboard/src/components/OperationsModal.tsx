@@ -12,7 +12,7 @@ export type OperationsModalProps = OperationsTableProps & {
 export const OperationsModal = ({
   isVisible,
   onClose,
-  ...props
+  operations,
 }: OperationsModalProps) => {
   return (
     <Modal
@@ -22,7 +22,7 @@ export const OperationsModal = ({
       footer={null}
       onCancel={onClose}
     >
-      <OperationsTable {...props} />
+      <OperationsTable operations={operations} />
     </Modal>
   );
 };

@@ -1,6 +1,5 @@
 import { Category, Operation, OperationType } from "@home-finance/shared";
-import { Radio, Switch, DatePicker, Space, Button } from "antd";
-import { tail, take } from "lodash";
+import { Radio, Switch, DatePicker, Space } from "antd";
 import moment from "moment";
 import { useState } from "react";
 import { ByMonthChart } from "../components/ByMonthChart";
@@ -47,8 +46,6 @@ export const ChartPage = () => {
     <div className="site-layout-content">
       <OperationsModal
         operations={modalOperations}
-        filters={filterProps}
-        onFilterChange={updateFilters}
         isVisible={isModalVisible}
         onClose={closeModal}
       />
