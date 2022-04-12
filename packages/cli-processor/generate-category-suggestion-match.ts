@@ -2,7 +2,7 @@
 
 import { $, chalk } from "zx";
 import {
-  CATEGORIES,
+  ALL_CATEGORIES,
   CategorySuggestionMatch,
   Operation,
 } from "@home-finance/shared";
@@ -21,7 +21,7 @@ $.verbose = false;
       "output/category-match.json"
     )) || ({} as CategorySuggestionMatch);
 
-  CATEGORIES.forEach((category) => {
+  ALL_CATEGORIES.forEach((category) => {
     categorySuggestionMatch[category] ||= [];
   });
 

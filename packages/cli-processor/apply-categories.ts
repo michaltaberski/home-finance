@@ -1,7 +1,7 @@
 #! ./node_modules/.bin/ts-node
 
 import { $, chalk } from "zx";
-import { CategorySuggestionMatch, Source, SOURCES } from "@home-finance/shared";
+import { CategorySuggestionMatch, SOURCES } from "@home-finance/shared";
 import {
   concatOperations,
   getSuggestion,
