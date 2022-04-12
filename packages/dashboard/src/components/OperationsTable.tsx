@@ -63,11 +63,19 @@ export const OperationsTable = ({
           : {}),
       },
       {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
+        title: "Title",
+        dataIndex: "title",
+        key: "title",
         ...(filters
-          ? { sorter: true, sortOrder: getSortOrder(filters, "description") }
+          ? { sorter: true, sortOrder: getSortOrder(filters, "title") }
+          : {}),
+      },
+      {
+        title: "Odbiorca / Nadawca",
+        dataIndex: "otherSide",
+        key: "otherSide",
+        ...(filters
+          ? { sorter: true, sortOrder: getSortOrder(filters, "otherSide") }
           : {}),
       },
       {
@@ -116,6 +124,13 @@ export const OperationsTable = ({
         render: (date) => formatDate(date),
       },
     ]}
-    dataSource={operations}
+    expandable={{
+      expandRowByClick: true,
+      expandedRowRender: (record) => (
+        <p style={{ margin: 0 }}>{record.description}</p>
+      ),
+      rowExpandable: (record) => record.name !== "Not Expandable",
+    }}
+    dataSource={operations.map((o) => ({ key: o.id, ...o }))}
   />
 );
