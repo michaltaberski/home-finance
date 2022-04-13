@@ -1,4 +1,9 @@
-import { getOeprationType, Operation, Source } from "@home-finance/shared";
+import {
+  Category,
+  getOeprationType,
+  Operation,
+  Source,
+} from "@home-finance/shared";
 
 type IngCsvRow = {
   dataTransakcji: string;
@@ -21,9 +26,6 @@ type IngCsvRow = {
 
 export const ingCsvRowToOperation = (row: IngCsvRow): Operation | null => {
   if (!row.dataTransakcji || !row.saldoPoTransakcji) return null;
-  if (row.dataTransakcji && !row.nrTransakcji) {
-    console.log("row ", row);
-  }
   const amount = parseFloat(row.kwotaTransakcji || row.kwotaBlokady);
   return {
     id: [row.dataTransakcji, row.saldoPoTransakcji].join(":"),
@@ -33,7 +35,7 @@ export const ingCsvRowToOperation = (row: IngCsvRow): Operation | null => {
     type: getOeprationType(amount),
     title: row.tytul,
     description: row.tytul,
-    category: null,
+    category: Category.UNCATEGORIZED,
     balanceAfterOperation: parseFloat(row.saldoPoTransakcji),
     otherSide: null,
   };

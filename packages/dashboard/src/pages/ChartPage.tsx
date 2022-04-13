@@ -49,8 +49,8 @@ export const ChartPage = () => {
   const { filterProps, updateFilters, operations } = useStore();
   const { isModalVisible, openModal, modalOperations, closeModal, modalTitle } =
     useOpenModal(operations);
-
   const fiteredOperations = filterOperations(operations || [], filterProps);
+
   return (
     <div className="site-layout-content">
       <OperationsModal

@@ -38,7 +38,7 @@ const getAllegroTransactionsByDay = (date: string) => {
 
 export const selectCategoryPrompt = async (
   operation: Operation
-): Promise<Category | null> => {
+): Promise<Category> => {
   const CATEGORIES =
     operation.amount > 0 ? INCOME_CATEGORIES : EXPENSE_CATGORIES;
   const categoryLabel = (
@@ -69,9 +69,9 @@ export const selectCategoryPrompt = async (
       },
     ])
   ).category;
-  return categoryLabel === "---"
-    ? null
-    : (LABEL_TO_CATEGORY_MAP[categoryLabel] as Category);
+  return (
+    (LABEL_TO_CATEGORY_MAP[categoryLabel] as Category) || Category.UNCATEGORIZED
+  );
 };
 
 export const selectCategoryForOperation = async (
@@ -119,10 +119,7 @@ export const selectCategoryForOperation = async (
   ).category;
   return {
     ...operation,
-    category:
-      categoryLabel === "---"
-        ? null
-        : (LABEL_TO_CATEGORY_MAP[categoryLabel] as Category),
+    category: LABEL_TO_CATEGORY_MAP[categoryLabel] as Category,
   };
 };
 
@@ -255,6 +252,8 @@ export const processInputDataBySource = async (
   for (const filePath of fileList) {
     const rawOperations = await getOperationsFromFile(filePath, source);
     for (const operation of rawOperations) {
+      console.log("raw", operation);
+
       const { id } = operation;
       if (!overwrite && currentOperations[id]) {
         currentOperations[id];
@@ -288,6 +287,7 @@ export const concatOperations = async (sources: Source[]) => {
     (acc, operations) => [...acc, ...operations],
     []
   );
+
   return sortBy(allOperations, "date").reverse();
 };
 
@@ -311,7 +311,7 @@ export const operationToString = ({
 export const getSuggestion = (
   operation: Operation,
   suggestionMatch: CategorySuggestionMatch
-): Category | null => {
+): Category => {
   const [category] =
     Object.entries(suggestionMatch).find(([_category, suggestions]) => {
       return suggestions.find((suggestion) => {
@@ -338,5 +338,5 @@ export const getSuggestion = (
         );
       });
     }) || [];
-  return (category as Category) || null;
+  return (category as Category) || Category.UNCATEGORIZED;
 };

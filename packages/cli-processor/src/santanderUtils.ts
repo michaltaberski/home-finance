@@ -1,4 +1,9 @@
-import { getOeprationType, Operation, Source } from "@home-finance/shared";
+import {
+  Category,
+  getOeprationType,
+  Operation,
+  Source,
+} from "@home-finance/shared";
 
 type SantanderBankRow = {
   id: string;
@@ -32,7 +37,7 @@ const santanderBankRowToOperation = (
     type: getOeprationType(amount),
     title: row.tytulOperacji,
     description: row.tytulOperacji,
-    category: null,
+    category: Category.UNCATEGORIZED,
     balanceAfterOperation: 0,
     otherSide: null,
   };

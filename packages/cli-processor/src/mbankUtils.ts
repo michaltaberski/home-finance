@@ -1,4 +1,5 @@
 import {
+  Category,
   getOeprationType,
   Operation,
   sanitizeTitle,
@@ -29,7 +30,7 @@ export const getMBankCsvRowToOperation =
       description: sanitzeString(description),
       amount,
       type: getOeprationType(amount),
-      category: null,
+      category: Category.UNCATEGORIZED,
       otherSide: null,
       balanceAfterOperation: 0,
     };

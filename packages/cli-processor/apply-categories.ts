@@ -1,7 +1,11 @@
 #! ./node_modules/.bin/ts-node
 
 import { $, chalk } from "zx";
-import { CategorySuggestionMatch, SOURCES } from "@home-finance/shared";
+import {
+  Category,
+  CategorySuggestionMatch,
+  SOURCES,
+} from "@home-finance/shared";
 import {
   concatOperations,
   getSuggestion,
@@ -22,7 +26,7 @@ $.verbose = false;
     const operationsFromCurrentOutputFile = await readOutputData(source);
     const operationsAfterUpdate =
       operationsFromCurrentOutputFile?.map((operation) => {
-        if (operation.category) return operation;
+        if (operation.category !== Category.UNCATEGORIZED) return operation;
         const suggestedCategory = getSuggestion(
           operation,
           categorySuggestionMatch
@@ -32,7 +36,6 @@ $.verbose = false;
           (suggestedCategory && chalk.blue(suggestedCategory)) ||
           chalk.red(suggestedCategory);
         console.log(operationToString(operation), " | ", suggestedCategoryLog);
-
         return { ...operation, category: suggestedCategory };
       }) || [];
     await saveJsonToFile(operationsAfterUpdate, `output/${source}.json`);

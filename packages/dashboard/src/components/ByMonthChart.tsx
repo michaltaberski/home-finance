@@ -66,6 +66,7 @@ export const ByMonthChart = ({
   operationType,
 }: ByMonthChartProps) => {
   const groupedOeprations = groupOeprations(operations);
+  console.log("groupedOeprations ", groupedOeprations);
   const chartData = groupedOeprationsToChartData(groupedOeprations);
   const KEYS =
     operationType === OperationType.EXPENSE
@@ -76,7 +77,7 @@ export const ByMonthChart = ({
     <div style={{ height: 700, marginBottom: 8 }}>
       <ResponsiveBar
         data={chartData}
-        keys={KEYS}
+        keys={[...KEYS, Category.UNCATEGORIZED]}
         indexBy="name"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
         onClick={({ id, indexValue }) => {

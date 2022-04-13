@@ -71,7 +71,7 @@ const filterMap: FilterMap = {
 export const categorySuggestion = (
   operation: Operation,
   _source: Source
-): Category | null => {
+): Category => {
   const phrase = operation.description.toLowerCase();
   const [category] =
     Object.entries(filterMap).find(([, filterPhrases]: [string, string[]]) => {
@@ -79,5 +79,5 @@ export const categorySuggestion = (
         return !!phrase.match(filterPhrase.toLowerCase());
       });
     }) || [];
-  return (category as Category) || null;
+  return (category as Category) || Category.UNCATEGORIZED;
 };

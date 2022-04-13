@@ -1,6 +1,11 @@
 import { $ } from "zx";
 import * as xml2js from "xml2js";
-import { getOeprationType, Operation, Source } from "@home-finance/shared";
+import {
+  Category,
+  getOeprationType,
+  Operation,
+  Source,
+} from "@home-finance/shared";
 
 export const getOperationsFromInteligoXmlFile = async (
   filePath: string
@@ -20,7 +25,7 @@ export const getOperationsFromInteligoXmlFile = async (
       date: transaction["exec-date"].join(""),
       amount,
       type: getOeprationType(amount),
-      category: null,
+      category: Category.UNCATEGORIZED,
       source: Source.INTELIGO,
       balanceAfterOperation: parseFloat(transaction["ending-balance"][0]["_"]),
       otherSide: transaction["other-side"]?.[0]["owner"][0]["line"]

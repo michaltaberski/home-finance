@@ -1,4 +1,9 @@
-import { getOeprationType, Operation, Source } from "@home-finance/shared";
+import {
+  Category,
+  getOeprationType,
+  Operation,
+  Source,
+} from "@home-finance/shared";
 
 type RevoultCsvRow = {
   Type: "CARD_PAYMENT" | "EXCHANGE" | "TRANSFER";
@@ -23,7 +28,7 @@ export const revoultCsvRowToOperation = (row: RevoultCsvRow): Operation => {
     type: getOeprationType(amount),
     title: row["Description"],
     description: row["Description"],
-    category: null,
+    category: Category.UNCATEGORIZED,
     balanceAfterOperation: parseFloat(row["Balance"]),
     otherSide: null,
   };

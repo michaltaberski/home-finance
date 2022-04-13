@@ -44,6 +44,7 @@ export enum Category {
   RETURN = "return",
   WORK_INCOME = "work-income",
   OTHER_INCOME = "other-income",
+  UNCATEGORIZED = "uncategorized",
 }
 
 export enum OperationType {
@@ -60,7 +61,7 @@ export type Operation = {
   title: string;
   description: string;
   otherSide: string | null;
-  category: Category | null;
+  category: Category;
   balanceAfterOperation: number;
 };
 
