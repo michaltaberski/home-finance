@@ -134,6 +134,37 @@ export const findPriceMatchDeal = (
   return priceMatchDeal || null;
 };
 
+const allegroDealToStringSimple = (deal: AllegroTransaction) =>
+  [
+    deal.tarnsactionTime,
+    deal.buyer,
+    deal.sellerLogin,
+    deal.items[0],
+    deal.totalPrice,
+  ].join(" | ");
+
+export const selectDeal = async (
+  allegroTransactions: AllegroTransaction[]
+): Promise<AllegroTransaction | null> => {
+  const labels = allegroTransactions.map(
+    (deal, i) => `[${i}] ${allegroDealToStringSimple(deal)}`
+  );
+  const dealLabel = (
+    await inquirer.prompt([
+      {
+        type: "list",
+        name: "deal",
+        message: "Select deal: ",
+        choices: ["---", ...labels],
+        filter: (val) => val.toLowerCase(),
+      },
+    ])
+  ).deal;
+
+  const index = parseInt(dealLabel?.match(/^\[(\d+)\]/)?.[1]);
+  return allegroTransactions[index] || null;
+};
+
 export const getIsItAllegroOperation = (
   operation: Operation,
   allegroDealsByDate: Dictionary<AllegroTransaction[]>

@@ -1,8 +1,12 @@
 #! ./node_modules/.bin/ts-node
 
-import { $ } from "zx";
+import { $, chalk } from "zx";
 import { Category, Operation, SOURCES } from "@home-finance/shared";
-import { concatOperations, readOutputData } from "./src/utils";
+import {
+  concatOperations,
+  operationToString,
+  readOutputData,
+} from "./src/utils";
 import { readJsonFile, saveJsonToFile } from "@home-finance/fs-utils";
 import {
   AllegroTransaction,
@@ -10,6 +14,7 @@ import {
   getIsItAllegroOperation,
   readAllegroDeals,
   selectCategoryForOperation,
+  selectDeal,
 } from "./src/allegroUtils";
 import { Dictionary, take } from "lodash";
 
@@ -37,25 +42,51 @@ const applyAllegroDealToOperation = async (
   if (isItReturn) {
     return { ...operation, title: "Zwrot Allegro", category: Category.RETURN };
   } else {
-    const matchingDeal = findPriceMatchDeal(operation, allegroDealsByDate);
+    const dealsFromThatDay = allegroDealsByDate[operation.date] || [];
+    if (operation.category !== Category.UNCATEGORIZED) {
+      return operation;
+    }
+
+    console.log(chalk.green("\n\n" + operationToString(operation)));
+
+    const matchingDeal =
+      findPriceMatchDeal(operation, allegroDealsByDate) ||
+      (dealsFromThatDay.length && (await selectDeal(dealsFromThatDay))) ||
+      null;
+    if (!matchingDeal) console.log(chalk.redBright("no matching deal"));
+
     const title = matchingDeal
       ? `Allegro ${matchingDeal.buyer}: ${matchingDeal.items[0]}`
       : operation.title;
+
     const description = [
       operation.description,
       matchingDeal?.items.join("\n"),
     ].join("\n");
 
     const category = await selectCategoryForOperation(
-      operation,
-      relatedAllegroDeals
+      { ...operation, title, description },
+      matchingDeal ? [] : relatedAllegroDeals
     );
-    console.log("category ", category);
+
     return { ...operation, category, title, description };
   }
 };
 
-const ALLEGRO_OPERATIONS_PATH = "output/allegroOperations.json";
+const ALLEGRO_OPERATIONS_PATH = "output/allegro-operations.json";
+
+const updateOrCreateAllegroOperations = (
+  operation: Operation,
+  allOperations: Operation[]
+) => {
+  const index = allOperations.findIndex(({ id }) => operation.id === id);
+  if (index !== -1) {
+    allOperations[index] = operation;
+  } else {
+    allOperations.push(operation);
+  }
+  return allOperations;
+};
 
 (async () => {
   const allegroDealsByDate = await readAllegroDeals();
@@ -71,9 +102,15 @@ const ALLEGRO_OPERATIONS_PATH = "output/allegroOperations.json";
         operation,
         allegroDealsByDate
       );
-      if (allegroOperation) {
-        allegroOperations.push(allegroOperation);
-        await saveJsonToFile(allegroOperations, ALLEGRO_OPERATIONS_PATH);
+      if (
+        allegroOperation &&
+        allegroOperation.category !== Category.UNCATEGORIZED
+      ) {
+        const updatedAllegroOperations = updateOrCreateAllegroOperations(
+          allegroOperation,
+          allegroOperations
+        );
+        await saveJsonToFile(updatedAllegroOperations, ALLEGRO_OPERATIONS_PATH);
       }
       outputOperations.push(allegroOperation || operation);
     }
