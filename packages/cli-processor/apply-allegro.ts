@@ -1,7 +1,7 @@
 #! ./node_modules/.bin/ts-node
 
 import { $, chalk } from "zx";
-import { Category, Operation, SOURCES } from "@home-finance/shared";
+import { Category, Operation, Source, SOURCES } from "@home-finance/shared";
 import {
   concatOperations,
   operationToString,
@@ -98,10 +98,15 @@ const updateOrCreateAllegroOperations = (
     const outputOperations: Operation[] = [];
 
     for (const operation of operationsFromCurrentOutputFile || []) {
-      const allegroOperation = await applyAllegroDealToOperation(
-        operation,
-        allegroDealsByDate
+      const restoredAllegroOperation = allegroOperations.find(
+        ({ id }) => operation.id == id
       );
+      if (restoredAllegroOperation) {
+        console.log(chalk.greenBright("Skipping..."));
+      }
+      const allegroOperation =
+        restoredAllegroOperation ||
+        (await applyAllegroDealToOperation(operation, allegroDealsByDate));
       if (
         allegroOperation &&
         allegroOperation.category !== Category.UNCATEGORIZED
