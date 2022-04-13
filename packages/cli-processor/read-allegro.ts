@@ -8,55 +8,6 @@ import { getRowsFromCsvFile } from "./src/csvUtils";
 
 $.verbose = false;
 
-type TransactionSegment = {
-  tarnsactionTime: string;
-  itemsCount: number;
-  itemUnitPrice: number;
-  itemTotalPrice: number;
-  description: string;
-  sellerLogin: string;
-};
-
-const csvRowToTransaction = (row: {
-  [key: string]: string;
-}): TransactionSegment => {
-  const rawRow = mapValues(row, (value: string) =>
-    value.replace(/^'/, "").replace(/'$/, "")
-  );
-  const count = parseInt(
-    rawRow["Liczba zakupionych przedmiotów / zestawów / kompletów"]
-  );
-  return {
-    tarnsactionTime: rawRow["Data zakupu"],
-    itemsCount: count,
-    itemUnitPrice: roundNumber(parseFloat(rawRow["Kwota transakcji"])),
-    itemTotalPrice: roundNumber(parseFloat(rawRow["Kwota transakcji"]) * count),
-    description: rawRow["Tytuł oferty"],
-    sellerLogin: rawRow["Login sprzedawcy"],
-  };
-};
-
-type AllegroTransaction = {
-  tarnsactionTime: string;
-  sellerLogin: string;
-  totalPrice: number;
-  items: string[];
-};
-
-const squashAllegroTransaction = (
-  transactionSegments: TransactionSegment[]
-): AllegroTransaction => {
-  return transactionSegments.reduce<AllegroTransaction>(
-    (acc, { description, itemTotalPrice, tarnsactionTime, sellerLogin }) => ({
-      tarnsactionTime,
-      sellerLogin,
-      totalPrice: roundNumber(acc.totalPrice + itemTotalPrice),
-      items: [description, ...acc.items],
-    }),
-    { tarnsactionTime: "", sellerLogin: "", items: [], totalPrice: 0 }
-  );
-};
-
 const MICHAL_ALLEGRO_FILE_PATH = "input/zakupy-na-allegro-michal.csv";
 const ANETA_ALLEGRO_FILE_PATH = "input/zakupy-na-allegro-aneta.csv";
 
