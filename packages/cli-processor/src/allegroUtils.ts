@@ -1,7 +1,16 @@
 import { updateTextFile } from "@home-finance/fs-utils";
-import { Operation, roundNumber } from "@home-finance/shared";
+import {
+  Category,
+  EXPENSE_CATGORIES,
+  LABEL_TO_CATEGORY_MAP,
+  Operation,
+  roundNumber,
+  toLabel,
+} from "@home-finance/shared";
+import inquirer from "inquirer";
 import { Dictionary, groupBy, mapValues } from "lodash";
 import { getRowsFromCsvFile } from "./csvUtils";
+import { operationToString } from "./utils";
 
 type Buyer = "aneta" | "michal";
 
@@ -20,6 +29,7 @@ export type AllegroTransaction = {
   sellerLogin: string;
   totalPrice: number;
   items: string[];
+  buyer: Buyer;
 };
 
 const getCsvRowToTransaction = (buyer: Buyer) => {
@@ -58,7 +68,13 @@ const squashAllegroTransaction = (
       totalPrice: roundNumber(acc.totalPrice + itemTotalPrice),
       items: [description, ...acc.items],
     }),
-    { tarnsactionTime: "", sellerLogin: "", items: [], totalPrice: 0 }
+    {
+      tarnsactionTime: "",
+      sellerLogin: "",
+      items: [],
+      totalPrice: 0,
+      buyer: "" as "aneta",
+    }
   );
 };
 
@@ -107,16 +123,56 @@ export const readAllegroDeals = async () => {
   );
 };
 
+export const findPriceMatchDeal = (
+  operation: Operation,
+  allegroDealsByDate: Dictionary<AllegroTransaction[]>
+): AllegroTransaction | null => {
+  const allegroDeals = allegroDealsByDate[operation.date];
+  const priceMatchDeal = allegroDeals?.find((deal) => {
+    return Math.abs(operation.amount) === deal.totalPrice;
+  });
+  return priceMatchDeal || null;
+};
+
 export const getIsItAllegroOperation = (
   operation: Operation,
   allegroDealsByDate: Dictionary<AllegroTransaction[]>
 ) => {
   const descriptionMatch = !!operation.description.match(/allegro/i);
-  const allegroDeals = allegroDealsByDate[operation.date];
+  const isPriceMatchingDeal = !!findPriceMatchDeal(
+    operation,
+    allegroDealsByDate
+  );
+  return isPriceMatchingDeal || descriptionMatch;
+};
 
-  const priceMatch = !!allegroDeals?.find((deal) => {
-    return Math.abs(operation.amount) === deal.totalPrice;
-  });
+const allegroDealToString = (allegroDeal: AllegroTransaction): string =>
+  JSON.stringify(allegroDeal, null, 2);
 
-  return priceMatch || descriptionMatch;
+export const selectCategoryForOperation = async (
+  operation: Operation,
+  relatedAllegroDeals: AllegroTransaction[]
+): Promise<Category> => {
+  // SKIP
+  if (operation.category !== Category.UNCATEGORIZED) return operation.category;
+
+  const categoryLabel = (
+    await inquirer.prompt([
+      {
+        type: "list",
+        name: "category",
+        message: [
+          operationToString(operation),
+          "------- Allegro from that day -------",
+          ...relatedAllegroDeals.map(allegroDealToString),
+        ].join("\n"),
+
+        choices: [Category.UNCATEGORIZED, ...EXPENSE_CATGORIES.map(toLabel)],
+        filter: (val) => val.toLowerCase(),
+      },
+    ])
+  ).category;
+  return (
+    (LABEL_TO_CATEGORY_MAP[categoryLabel] as Category) || Category.UNCATEGORIZED
+  );
 };

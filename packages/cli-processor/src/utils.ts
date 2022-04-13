@@ -1,6 +1,5 @@
-import { $, chalk } from "zx";
+import { $ } from "zx";
 import { getOperationsFromInteligoXmlFile } from "./inteligoUtils";
-import * as inquirer from "inquirer";
 import { keyBy, sortBy } from "lodash";
 import { revoultCsvRowToOperation } from "./revolutUtils";
 import { getRowsFromCsvFile } from "./csvUtils";
@@ -9,14 +8,9 @@ import {
   santanderCreditCardCsvRowToOperation,
 } from "./santanderUtils";
 import { getMBankCsvRowToOperation } from "./mBankUtils";
-import { categorySuggestion } from "./filterUtils";
 
 // import allegroTransactions from "../output-data/allegro-by-day.json";
 import {
-  CATEGORY_TO_LABEL_MAP,
-  EXPENSE_CATGORIES,
-  INCOME_CATEGORIES,
-  LABEL_TO_CATEGORY_MAP,
   Category,
   ExcludeFalsy,
   Operation,
@@ -29,99 +23,6 @@ import {
 } from "@home-finance/shared";
 import { getDataPath, readTextFile } from "@home-finance/fs-utils";
 import { ingCsvRowToOperation } from "./ingUtils";
-
-const getAllegroTransactionsByDay = (date: string) => {
-  console.log("FIXME");
-  return [];
-  // return allegroTransactions[date];
-};
-
-export const selectCategoryPrompt = async (
-  operation: Operation
-): Promise<Category> => {
-  const CATEGORIES =
-    operation.amount > 0 ? INCOME_CATEGORIES : EXPENSE_CATGORIES;
-  const categoryLabel = (
-    await inquirer.prompt([
-      {
-        type: "list",
-        name: "category",
-        message: [
-          operationToString(operation),
-          ...(operation.description.toLowerCase().match("allegro")
-            ? [
-                "------- Allegro from that day -------",
-                JSON.stringify(
-                  getAllegroTransactionsByDay(operation.date),
-                  null,
-                  2
-                ),
-                "",
-              ]
-            : []),
-        ].join("\n"),
-
-        choices: [
-          "---",
-          ...CATEGORIES.map((category) => CATEGORY_TO_LABEL_MAP[category]),
-        ],
-        filter: (val) => val.toLowerCase(),
-      },
-    ])
-  ).category;
-  return (
-    (LABEL_TO_CATEGORY_MAP[categoryLabel] as Category) || Category.UNCATEGORIZED
-  );
-};
-
-export const selectCategoryForOperation = async (
-  operation: Operation,
-  source: Source
-): Promise<Operation> => {
-  // SKIP
-  if (operation.category) return operation;
-  // SUGGESTION SELECTED
-  const suggestedCategory = categorySuggestion(operation, source);
-  if (suggestedCategory) {
-    console.log("Suggested category assigned: ", suggestedCategory);
-    return { ...operation, category: suggestedCategory };
-  }
-
-  const CATEGORIES =
-    operation.amount > 0 ? INCOME_CATEGORIES : EXPENSE_CATGORIES;
-  const categoryLabel = (
-    await inquirer.prompt([
-      {
-        type: "list",
-        name: "category",
-        message: [
-          `${operation.date}: ${operation.otherSide}: ${operation.description} (${operation.amount})`,
-          ...(operation.description.toLowerCase().match("allegro")
-            ? [
-                "------- Allegro from that day -------",
-                JSON.stringify(
-                  getAllegroTransactionsByDay(operation.date),
-                  null,
-                  2
-                ),
-                "",
-              ]
-            : []),
-        ].join("\n"),
-
-        choices: [
-          "---",
-          ...CATEGORIES.map((category) => CATEGORY_TO_LABEL_MAP[category]),
-        ],
-        filter: (val) => val.toLowerCase(),
-      },
-    ])
-  ).category;
-  return {
-    ...operation,
-    category: LABEL_TO_CATEGORY_MAP[categoryLabel] as Category,
-  };
-};
 
 export const getFilesListBySource = async (source: Source) =>
   (await $`ls ${getDataPath(`input/${source}`)}`).stdout
@@ -240,7 +141,7 @@ export const processInputDataBySource = async (
   source: Source,
   options?: ProcessInputDataOptions
 ): Promise<Operation[]> => {
-  const { skipCategoryPrompt = true, overwrite = false } = options || {};
+  const { overwrite = false } = options || {};
   const operations: Operation[] = [];
   const fileList = await getFilesListBySource(source);
   const operationsFromCurrentOutputFile = await readOutputData(source);
@@ -252,27 +153,11 @@ export const processInputDataBySource = async (
   for (const filePath of fileList) {
     const rawOperations = await getOperationsFromFile(filePath, source);
     for (const operation of rawOperations) {
-      console.log("raw", operation);
-
       const { id } = operation;
       if (!overwrite && currentOperations[id]) {
-        currentOperations[id];
-        operations.push(
-          skipCategoryPrompt
-            ? currentOperations[id]
-            : await selectCategoryForOperation(currentOperations[id], source)
-        );
+        operations.push(currentOperations[id]);
       } else {
-        if (!skipCategoryPrompt) {
-          console.log(
-            `${operation.source} (${operation.date}): ${operation.description}: ${operation.amount}zł`
-          );
-        }
-        operations.push(
-          skipCategoryPrompt
-            ? operation
-            : await selectCategoryForOperation(operation, source)
-        );
+        operations.push(operation);
       }
     }
   }
