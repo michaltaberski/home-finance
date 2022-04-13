@@ -20,9 +20,14 @@ import {
   CategorySuggestionMatch,
   formatCurrency,
   sanitzeString,
+  INCOME_CATEGORIES,
+  EXPENSE_CATGORIES,
+  CATEGORY_TO_LABEL_MAP,
+  LABEL_TO_CATEGORY_MAP,
 } from "@home-finance/shared";
 import { getDataPath, readTextFile } from "@home-finance/fs-utils";
 import { ingCsvRowToOperation } from "./ingUtils";
+import inquirer from "inquirer";
 
 export const getFilesListBySource = async (source: Source) =>
   (await $`ls ${getDataPath(`input/${source}`)}`).stdout
@@ -226,3 +231,44 @@ export const getSuggestion = (
     }) || [];
   return (category as Category) || Category.UNCATEGORIZED;
 };
+
+export const selectCategoryPrompt = async (
+  operation: Operation
+): Promise<Category> => {
+  const CATEGORIES =
+    operation.amount > 0 ? INCOME_CATEGORIES : EXPENSE_CATGORIES;
+  const categoryLabel = (
+    await inquirer.prompt([
+      {
+        type: "list",
+        name: "category",
+        message: [
+          operationToString(operation),
+          ...(operation.description.toLowerCase().match("allegro")
+            ? [
+                "------- Allegro from that day -------",
+                JSON.stringify(
+                  getAllegroTransactionsByDay(operation.date),
+                  null,
+                  2
+                ),
+                "",
+              ]
+            : []),
+        ].join("\n"),
+
+        choices: [
+          "---",
+          ...CATEGORIES.map((category) => CATEGORY_TO_LABEL_MAP[category]),
+        ],
+        filter: (val) => val.toLowerCase(),
+      },
+    ])
+  ).category;
+  return (
+    (LABEL_TO_CATEGORY_MAP[categoryLabel] as Category) || Category.UNCATEGORIZED
+  );
+};
+function getAllegroTransactionsByDay(date: string): any {
+  throw new Error("Function not implemented.");
+}
