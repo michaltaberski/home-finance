@@ -1,6 +1,6 @@
 import { $ } from "zx";
 import { getOperationsFromInteligoXmlFile } from "./inteligoUtils";
-import { keyBy, sortBy } from "lodash";
+import { keyBy, map, sortBy, uniqBy } from "lodash";
 import { revoultCsvRowToOperation } from "./revolutUtils";
 import { getRowsFromCsvFile } from "./csvUtils";
 import {
@@ -154,14 +154,15 @@ export const processInputDataBySource = async (
     const rawOperations = await getOperationsFromFile(filePath, source);
     for (const operation of rawOperations) {
       const { id } = operation;
-      if (!overwrite && currentOperations[id]) {
-        operations.push(currentOperations[id]);
-      } else {
-        operations.push(operation);
-      }
+      const operationToAdd =
+        !overwrite && currentOperations[id] ? currentOperations[id] : operation;
+      operations.push(operationToAdd);
     }
   }
-  return sortOperations(operations, source);
+  return sortOperations(
+    uniqBy(operations, ({ id }) => id),
+    source
+  );
 };
 
 export const concatOperations = async (sources: Source[]) => {

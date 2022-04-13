@@ -20,9 +20,10 @@ export const getOperationsFromInteligoXmlFile = async (
       .join("")
       .replace(/.+Tytuł: /, "")
       .replace(/ Data waluty:.+/, "");
+    const date = transaction["exec-date"].join("");
     return {
-      id: transaction["$"]["id"],
-      date: transaction["exec-date"].join(""),
+      id: [Source.INTELIGO, date, amount].join("-"),
+      date,
       amount,
       type: getOeprationType(amount),
       category: Category.UNCATEGORIZED,
