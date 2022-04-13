@@ -6,6 +6,7 @@ import { ChartPage } from "./pages/ChartPage";
 import { OverviewPage } from "./pages/OverviewPage";
 import { useStore } from "./useStore";
 import { useEffect } from "react";
+import { CashOperationsPage } from "./pages/CashOperationsPage";
 
 const { Header, Content, Footer } = Layout;
 
@@ -30,6 +31,9 @@ function App() {
           <Link to="/chart">
             <Menu.Item>Wykres</Menu.Item>
           </Link>
+          <Link to="/cash-operations">
+            <Menu.Item>Operacje gotówkowe</Menu.Item>
+          </Link>
           <Link to="/overview">
             <Menu.Item>Overview</Menu.Item>
           </Link>
@@ -46,6 +50,7 @@ function App() {
         <Routes>
           <Route path="/" element={<OperationsPage />} />
           <Route path="chart" element={<ChartPage />} />
+          <Route path="cash-operations" element={<CashOperationsPage />} />
           <Route path="overview" element={<OverviewPage />} />
         </Routes>
       </Content>
