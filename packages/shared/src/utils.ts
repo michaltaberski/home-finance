@@ -1,6 +1,6 @@
 import { first, groupBy, last, sortBy, truncate } from "lodash";
 import { SOURCES } from "./const";
-import { Operation, OperationType, Source } from "./types";
+import { Category, Operation, OperationType, Source } from "./types";
 import { format } from "date-fns";
 
 export const roundNumber = (num: number) => Math.round(num * 100) / 100;
@@ -21,7 +21,7 @@ export const getOperationsStatistics = (
 ): OperationsStatistics => {
   const sortedOperations = sortBy(operations, "date").reverse();
   const operationsWithoutCategory = sortedOperations.filter(
-    ({ category }) => !category
+    ({ category }) => category === Category.UNCATEGORIZED
   );
   const newest = first(sortedOperations) || null;
   const oldest = last(sortedOperations) || null;
