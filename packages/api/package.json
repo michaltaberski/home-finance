@@ -12,7 +12,8 @@
     "@home-finance/fs-utils": "workspace:^",
     "@home-finance/shared": "workspace:^",
     "dotenv": "^16.0.0",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

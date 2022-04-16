@@ -25,7 +25,11 @@ import {
   CATEGORY_TO_LABEL_MAP,
   LABEL_TO_CATEGORY_MAP,
 } from "@home-finance/shared";
-import { getDataPath, readTextFile } from "@home-finance/fs-utils";
+import {
+  getDataPath,
+  readOutputData,
+  readTextFile,
+} from "@home-finance/fs-utils";
 import { ingCsvRowToOperation } from "./ingUtils";
 import inquirer from "inquirer";
 
@@ -128,11 +132,6 @@ export const readJsonFile = async <T>(path: string): Promise<null | T> => {
   return JSON.parse(textContent);
 };
 
-export const readOutputData = async (
-  source: Source
-): Promise<null | Operation[]> =>
-  readJsonFile<Operation[]>(`output/${source}.json`);
-
 const sortOperations = (operations: Operation[], _source: Source) => {
   return sortBy(operations, ({ id }) => parseInt(id)).reverse();
 };
@@ -168,18 +167,6 @@ export const processInputDataBySource = async (
     uniqBy(operations, ({ id }) => id),
     source
   );
-};
-
-export const concatOperations = async (sources: Source[]) => {
-  const bySourceOutputs = await (
-    await Promise.all(sources.map((source) => readOutputData(source)))
-  ).filter(ExcludeFalsy);
-  const allOperations = bySourceOutputs.reduce<Operation[]>(
-    (acc, operations) => [...acc, ...operations],
-    []
-  );
-
-  return sortBy(allOperations, "date").reverse();
 };
 
 export const operationToString = ({

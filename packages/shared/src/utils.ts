@@ -16,10 +16,13 @@ export type OperationsStatistics = {
   operationsWithoutCategoryCount: number;
 };
 
+export const sortOperationsByDate = (operations: Operation[]) =>
+  sortBy(operations, "date").reverse();
+
 export const getOperationsStatistics = (
   operations: Operation[]
 ): OperationsStatistics => {
-  const sortedOperations = sortBy(operations, "date").reverse();
+  const sortedOperations = sortOperationsByDate(operations);
   const operationsWithoutCategory = sortedOperations.filter(
     ({ category }) => category === Category.UNCATEGORIZED
   );
@@ -49,15 +52,18 @@ export const getStatisticsBySource = (
 // 2022-04-08 or 2022-04
 export const formatDate = (date?: string) => {
   if (!date) return "-";
-
-  const [year, month, day = 0] = (date.split("-") || []).map((v) =>
-    parseInt(v)
-  );
-  const monthIndex = month - 1;
-  if (day === 0) {
-    return format(new Date(year, monthIndex), "MMM yyyy");
+  try {
+    const [year, month, day = 0] = (date.split("-") || []).map((v) =>
+      parseInt(v)
+    );
+    const monthIndex = month - 1;
+    if (day === 0) {
+      return format(new Date(year, monthIndex), "MMM yyyy");
+    }
+    return format(new Date(year, monthIndex, day || undefined), "d MMM yyyy");
+  } catch (error) {
+    return "Error!";
   }
-  return format(new Date(year, monthIndex, day || undefined), "d MMM yyyy");
 };
 
 export const formatInt = (number?: number | string) => {

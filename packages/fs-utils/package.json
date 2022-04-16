@@ -5,6 +5,7 @@
   "main": "./src/index.ts",
   "eslintConfig": {},
   "dependencies": {
+    "@home-finance/shared": "workspace:^",
     "lodash": "^4.17.21",
     "zx": "^4.2.0"
   },

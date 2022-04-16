@@ -9,9 +9,9 @@ import {
   Source,
   SOURCE_TO_LABEL_MAP,
 } from "@home-finance/shared";
-import { red, green } from "@ant-design/colors";
 import { SourceIcon } from "./SourceIcon";
 import { SorterResult } from "antd/lib/table/interface";
+import { EXPENSE_RED, INCOME_GREEN } from "../const";
 
 export type OperationsTableProps = {
   operations: Operation[];
@@ -33,6 +33,11 @@ export const OperationsTable = ({
 }: OperationsTableProps) => (
   <Table
     loading={isLoading}
+    onRow={(record) => ({
+      onDoubleClick: () => {
+        console.log(record);
+      },
+    })}
     onChange={({ current, pageSize }, { category, source }, sorter) => {
       const { columnKey, order } = sorter as SorterResult<Operation>;
       onFilterChange?.({
@@ -107,7 +112,7 @@ export const OperationsTable = ({
           ? { sorter: true, sortOrder: getSortOrder(filters, "amount") }
           : { sorter: (a, b) => a.amount - b.amount }),
         render: (amount) => (
-          <span style={{ color: amount > 0 ? green[6] : red[5] }}>
+          <span style={{ color: amount > 0 ? INCOME_GREEN : EXPENSE_RED }}>
             {formatCurrency(amount)}
           </span>
         ),
@@ -124,13 +129,6 @@ export const OperationsTable = ({
         render: (date) => formatDate(date),
       },
     ]}
-    expandable={{
-      expandRowByClick: true,
-      expandedRowRender: (record) => (
-        <p style={{ margin: 0 }}>{record.description}</p>
-      ),
-      rowExpandable: (record) => record.name !== "Not Expandable",
-    }}
     dataSource={operations.map((o) => ({ key: o.id, ...o }))}
   />
 );

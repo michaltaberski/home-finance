@@ -1,12 +1,12 @@
 #! ./node_modules/.bin/ts-node
 
 import { $ } from "zx";
+import { getCliArgs, processInputDataBySource } from "./src/utils";
 import {
   concatOperations,
-  getCliArgs,
-  processInputDataBySource,
-} from "./src/utils";
-import { saveJsonToFile } from "@home-finance/fs-utils";
+  saveJsonToFile,
+  writeOutputData,
+} from "@home-finance/fs-utils";
 import { Source, SOURCES } from "@home-finance/shared";
 import { without } from "lodash";
 
@@ -18,7 +18,7 @@ $.verbose = false;
     const outputData = await processInputDataBySource(source, {
       overwrite: !!overwrite,
     });
-    await saveJsonToFile(outputData, `output/${source}.json`);
+    await writeOutputData(outputData, source);
   }
   await saveJsonToFile(
     await concatOperations(SOURCES),

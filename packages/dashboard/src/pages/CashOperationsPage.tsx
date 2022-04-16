@@ -1,15 +1,21 @@
-import {
-  AutoComplete,
-  Button,
-  Divider,
-  Form,
-  Input,
-  PageHeader,
-  Radio,
-} from "antd";
+import { Source } from "@home-finance/shared";
+import { Button, PageHeader } from "antd";
+import { useState } from "react";
+import { CreateOrUpdateOperationModal } from "../components/CreateOrUpdateOperationModal";
+import { OperationsTable } from "../components/OperationsTable";
+import { useStore } from "../useStore";
 
 export const CashOperationsPage = () => {
-  const [form] = Form.useForm();
+  const {
+    operations: allOperations,
+    isLoadingOperations,
+    updateFilters,
+    filterProps,
+  } = useStore();
+  const cashOperations = allOperations.filter(
+    ({ source }) => Source.CASH === source
+  );
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   return (
     <div className="site-layout-content">
@@ -18,24 +24,21 @@ export const CashOperationsPage = () => {
         title="Cash operations [TODO]"
         // subTitle="This is a subtitle"
       />
-      <Form layout="inline" form={form}>
-        <Form.Item label="Data">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Tytuł">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Odbiorca">
-          <AutoComplete style={{ width: 200 }} />
-        </Form.Item>
-        <Form.Item label="Kategoria">
-          <AutoComplete style={{ width: 200 }} />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary">Dodaj</Button>
-        </Form.Item>
-      </Form>
-      <Divider />
+      <Button type="primary" onClick={() => setOpenModal(true)}>
+        Open modal
+      </Button>
+      <CreateOrUpdateOperationModal
+        isVisible={openModal}
+        onClose={() => {
+          setOpenModal(false);
+        }}
+      />
+      <OperationsTable
+        isLoading={isLoadingOperations}
+        operations={cashOperations}
+        filters={filterProps}
+        onFilterChange={updateFilters}
+      />
     </div>
   );
 };

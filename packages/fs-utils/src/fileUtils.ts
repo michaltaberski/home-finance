@@ -1,5 +1,7 @@
 import { $, fs } from "zx";
 import path from "path";
+import { ExcludeFalsy, Operation, Source } from "@home-finance/shared";
+import { sortBy } from "lodash";
 const { writeFile } = fs.promises;
 
 $.verbose = false;
@@ -48,4 +50,24 @@ export const updateTextFile = async (
   const text = await readTextFile(filePath);
   const processedText = updateFn(text || "");
   await saveTextToFile(processedText, filePath);
+};
+
+export const readOutputData = async (
+  source: Source
+): Promise<null | Operation[]> =>
+  readJsonFile<Operation[]>(`output/${source}.json`);
+
+export const writeOutputData = (operations: Operation[], source: Source) =>
+  saveJsonToFile(operations, `output/${source}.json`);
+
+export const concatOperations = async (sources: Source[]) => {
+  const bySourceOutputs = await (
+    await Promise.all(sources.map((source) => readOutputData(source)))
+  ).filter(ExcludeFalsy);
+  const allOperations = bySourceOutputs.reduce<Operation[]>(
+    (acc, operations) => [...acc, ...operations],
+    []
+  );
+
+  return sortBy(allOperations, "date").reverse();
 };
