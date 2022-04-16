@@ -3,6 +3,7 @@ import {
   CATEGORY_TO_LABEL_MAP,
   Operation,
   OperationType,
+  sleep,
   Source,
 } from "@home-finance/shared";
 import {
@@ -16,6 +17,7 @@ import {
   Row,
   Select,
 } from "antd";
+import { omit } from "lodash";
 import moment from "moment";
 import { useState } from "react";
 import { useStore } from "../useStore";
@@ -25,7 +27,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 export type CreateOperationModalProps = {
-  modalTitle?: string;
+  operation?: Operation;
   onClose?: VoidFunction;
   isVisible?: boolean;
 };
@@ -38,10 +40,11 @@ const submitOperation = (operation: Operation) =>
   });
 
 export const CreateOrUpdateOperationModal = ({
-  modalTitle,
+  operation,
   isVisible,
   onClose,
 }: CreateOperationModalProps) => {
+  const isEdit = Boolean(operation);
   const { loadOperations } = useStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form] = Form.useForm<Operation>();
@@ -51,7 +54,7 @@ export const CreateOrUpdateOperationModal = ({
       keyboard={false}
       maskClosable={false}
       visible={isVisible}
-      title={modalTitle || "Create "}
+      title={"Create "}
       onOk={() => console.log("handleOk")}
       onCancel={onClose}
       footer={
@@ -78,7 +81,7 @@ export const CreateOrUpdateOperationModal = ({
       <Form
         layout="vertical"
         form={form}
-        initialValues={{ type: OperationType.EXPENSE, date: moment() }}
+        initialValues={omit(operation, "date")}
         onFinish={async (formData) => {
           const operation: Operation = Object.assign(
             { description: "", otherSide: "", source: Source.CASH },
@@ -92,7 +95,7 @@ export const CreateOrUpdateOperationModal = ({
             }
           );
           setIsLoading(true);
-          await new Promise((resolve) => setTimeout(resolve, 100));
+          await sleep(200);
           await submitOperation(operation);
           setIsLoading(false);
           form.resetFields();

@@ -1,4 +1,9 @@
-import { FilterProps, Operation, OperationType } from "@home-finance/shared";
+import {
+  FilterProps,
+  Operation,
+  OperationType,
+  sleep,
+} from "@home-finance/shared";
 import create from "zustand";
 
 type State = {
@@ -36,7 +41,7 @@ export const useStore = create<State & Actions>((set) => ({
     set((state) => ({ ...state, isLoadingOperations: true }));
     const response = await fetch("http://localhost:8000/all-operations");
     const operations: Operation[] = await response.json();
-    await new Promise((r) => setTimeout(r, 2000));
+    await sleep(200);
     set((state) => ({ ...state, operations, isLoadingOperations: false }));
   },
   updateFilters(changes: Partial<FilterProps>) {

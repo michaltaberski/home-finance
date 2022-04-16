@@ -97,3 +97,6 @@ export const sanitzeString = (anyString: string) =>
 
 export const sanitizeTitle = (anyString: string) =>
   truncate(sanitzeString(anyString), { length: 50 });
+
+export const sleep = (ms = 100) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
