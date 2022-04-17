@@ -8,7 +8,7 @@ import {
 } from "@home-finance/fs-utils";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Operation, SOURCES } from "@home-finance/shared";
+import { Operation, Source, SOURCES } from "@home-finance/shared";
 import { updateOrCreate } from "./utils";
 import { v4 as uuidv4 } from "uuid";
 
@@ -46,6 +46,29 @@ app.post(
     );
     await saveJsonToFile(
       updateOrCreate(operation, customOperations),
+      `output/custom-operations.json`
+    );
+    res.status(201).json(await readJsonFile(`output/all-operations.json`));
+  }
+);
+
+app.post(
+  "/delete-operation",
+  async (req: Request<Operation>, res: Response) => {
+    const { id } = req.body;
+    const sourceOperations = await readOutputData(Source.CASH);
+    const updatedSourceOperations = sourceOperations.filter((o) => o.id !== id);
+    await writeOutputData(updatedSourceOperations, Source.CASH);
+    await saveJsonToFile(
+      await concatOperations(SOURCES),
+      `output/all-operations.json`
+    );
+
+    const customOperations = await readJsonFile<Operation[]>(
+      `output/custom-operations.json`
+    );
+    await saveJsonToFile(
+      customOperations.filter((o) => o.id !== id),
       `output/custom-operations.json`
     );
     res.status(201).json(await readJsonFile(`output/all-operations.json`));

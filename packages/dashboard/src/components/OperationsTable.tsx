@@ -40,6 +40,7 @@ export const OperationsTable = ({
   return (
     <>
       <CreateOrUpdateOperationModal
+        key={editableOperation?.id}
         operation={editableOperation || undefined}
         isVisible={isEditModalVisible}
         onClose={() => setEditableOperation(null)}

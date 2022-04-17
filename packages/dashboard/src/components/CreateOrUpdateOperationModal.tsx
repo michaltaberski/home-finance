@@ -17,11 +17,21 @@ import {
   Row,
   Select,
 } from "antd";
-import { omit } from "lodash";
 import moment from "moment";
 import { useState } from "react";
 import { useStore } from "../useStore";
 // import { EXPENSE_RED, INCOME_GREEN } from "../const";
+
+import styled from "styled-components";
+
+const SelectWrapper = styled.div`
+  .ant-form-item-control-input {
+    min-height: 0;
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+`;
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -39,14 +49,22 @@ const submitOperation = (operation: Operation) =>
     body: JSON.stringify(operation),
   });
 
+const deleteOperation = (operation: Operation) =>
+  fetch("http://localhost:8000/delete-operation", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(operation),
+  });
+
 export const CreateOrUpdateOperationModal = ({
   operation,
   isVisible,
   onClose,
 }: CreateOperationModalProps) => {
-  const isEdit = Boolean(operation);
   const { loadOperations } = useStore();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<"submitting" | "deleting" | false>(
+    false
+  );
   const [form] = Form.useForm<Operation>();
 
   return (
@@ -59,19 +77,36 @@ export const CreateOrUpdateOperationModal = ({
       onCancel={onClose}
       footer={
         <>
-          <Button key="back" onClick={onClose} disabled={isLoading}>
+          <Button key="back" onClick={onClose} disabled={!!isLoading}>
             Cancel
           </Button>
-          {/*
-          <Button key="submit" danger onClick={() => console.log("Delete")}>
-            Delete
-          </Button>
-          */}
+
+          {operation?.source === Source.CASH && (
+            <Button
+              key="delete"
+              danger
+              loading={isLoading === "deleting"}
+              disabled={!!isLoading}
+              onClick={async () => {
+                setIsLoading("deleting");
+                await sleep(200);
+                await deleteOperation(operation);
+                setIsLoading(false);
+                form.resetFields();
+                loadOperations();
+                onClose?.();
+              }}
+            >
+              Delete
+            </Button>
+          )}
+
           <Button
             key="submit"
             type="primary"
             onClick={form.submit}
-            loading={isLoading}
+            loading={isLoading === "submitting"}
+            disabled={!!isLoading}
           >
             Save
           </Button>
@@ -81,10 +116,23 @@ export const CreateOrUpdateOperationModal = ({
       <Form
         layout="vertical"
         form={form}
-        initialValues={omit(operation, "date")}
+        initialValues={
+          operation
+            ? {
+                ...operation,
+                amount: Math.abs(operation.amount),
+                date: moment(operation.date, "YYYY-MM-DD"),
+              }
+            : {}
+        }
         onFinish={async (formData) => {
-          const operation: Operation = Object.assign(
-            { description: "", otherSide: "", source: Source.CASH },
+          const operationToSave: Operation = Object.assign(
+            {
+              id: operation?.id,
+              description: "",
+              otherSide: "",
+              source: Source.CASH,
+            },
             formData,
             {
               // @ts-ignore
@@ -96,7 +144,7 @@ export const CreateOrUpdateOperationModal = ({
           );
           setIsLoading(true);
           await sleep(200);
-          await submitOperation(operation);
+          await submitOperation(operationToSave);
           setIsLoading(false);
           form.resetFields();
           loadOperations();
@@ -125,12 +173,14 @@ export const CreateOrUpdateOperationModal = ({
               <InputNumber
                 style={{ width: "100%" }}
                 addonBefore={
-                  <Form.Item name="type" rules={[{ required: true }]}>
-                    <Select value={form.getFieldValue("type")}>
-                      <Option value={OperationType.INCOME}>+</Option>
-                      <Option value={OperationType.EXPENSE}>-</Option>
-                    </Select>
-                  </Form.Item>
+                  <SelectWrapper>
+                    <Form.Item name="type" rules={[{ required: true }]}>
+                      <Select value={form.getFieldValue("type")}>
+                        <Option value={OperationType.INCOME}>+</Option>
+                        <Option value={OperationType.EXPENSE}>-</Option>
+                      </Select>
+                    </Form.Item>
+                  </SelectWrapper>
                 }
                 addonAfter="zł"
                 // style={{
