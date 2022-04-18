@@ -1,6 +1,5 @@
 node_modules
 input-data
 output-data
-/data
 dist
 .yarn
