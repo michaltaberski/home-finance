@@ -4,6 +4,7 @@ import {
   OperationType,
   sleep,
 } from "@home-finance/shared";
+import moment from "moment";
 import create from "zustand";
 
 type State = {
@@ -27,7 +28,10 @@ const deafultState: State = {
     perPage: 10,
     searchPhrase: "",
     amount: { from: null, to: null },
-    date: { from: "2022-01", to: "2022-03" },
+    date: {
+      from: moment().subtract(3, "month").format("YYYY-MM"),
+      to: moment().format("YYYY-MM"),
+    },
     sortBy: "date",
     sortOrder: undefined,
     source: null,
