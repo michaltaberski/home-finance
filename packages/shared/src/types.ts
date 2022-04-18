@@ -79,4 +79,12 @@ export type FilterProps = {
   category: null | Category[];
 };
 
+export type AutoConfigRule = {
+  rules: {
+    matchPhrase?: string;
+    source?: Source;
+  };
+  applyProps: Partial<Operation>;
+};
+
 export type CategorySuggestionMatch = Record<Category, string[]>;

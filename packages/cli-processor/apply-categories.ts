@@ -6,13 +6,13 @@ import {
   CategorySuggestionMatch,
   SOURCES,
 } from "@home-finance/shared";
+import { getSuggestion, operationToString } from "./src/utils";
 import {
   concatOperations,
-  getSuggestion,
-  operationToString,
+  readJsonFile,
   readOutputData,
-} from "./src/utils";
-import { readJsonFile, saveJsonToFile } from "@home-finance/fs-utils";
+  saveJsonToFile,
+} from "@home-finance/fs-utils";
 
 $.verbose = false;
 
