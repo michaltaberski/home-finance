@@ -4,6 +4,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { OperationsPage } from "./pages/OperationsPage";
 import { ChartPage } from "./pages/ChartPage";
 import { OverviewPage } from "./pages/OverviewPage";
+import { BalancePage } from "./pages/BalancePage";
 import { useStore } from "./useStore";
 import { useEffect } from "react";
 import { CashOperationsPage } from "./pages/CashOperationsPage";
@@ -31,6 +32,9 @@ function App() {
           <Link to="/chart">
             <Menu.Item>Wykres</Menu.Item>
           </Link>
+          <Link to="/balance">
+            <Menu.Item>Balans</Menu.Item>
+          </Link>
           <Link to="/cash-operations">
             <Menu.Item>Operacje gotówkowe</Menu.Item>
           </Link>
@@ -49,6 +53,7 @@ function App() {
         </Breadcrumb>
         <Routes>
           <Route path="/" element={<OperationsPage />} />
+          <Route path="balance" element={<BalancePage />} />
           <Route path="chart" element={<ChartPage />} />
           <Route path="cash-operations" element={<CashOperationsPage />} />
           <Route path="overview" element={<OverviewPage />} />

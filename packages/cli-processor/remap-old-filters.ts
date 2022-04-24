@@ -5,7 +5,6 @@ import {
   AutoConfigRule,
   Category,
   CategorySuggestionMatch,
-  Operation,
 } from "@home-finance/shared";
 import { readJsonFile, saveJsonToFile } from "@home-finance/fs-utils";
 

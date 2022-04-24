@@ -168,7 +168,7 @@ export const ByMonthChart = ({
           },
         ]}
         role="application"
-        ariaLabel="Nivo bar chart demo"
+        // ariaLabel="Nivo bar chart demo"
         barAriaLabel={function (e) {
           return (
             e.id + ": " + e.formattedValue + " in country: " + e.indexValue
