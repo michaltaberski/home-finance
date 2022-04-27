@@ -33,6 +33,7 @@ app.post(
       otherSide: "",
       ...req.body,
     };
+
     const sourceOperations = await readOutputData(operation.source);
     const updatedSourceOperations = updateOrCreate(operation, sourceOperations);
     await writeOutputData(updatedSourceOperations, operation.source);

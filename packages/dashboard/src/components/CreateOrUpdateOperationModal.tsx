@@ -131,7 +131,7 @@ export const CreateOrUpdateOperationModal = ({
               id: operation?.id,
               description: "",
               otherSide: "",
-              source: Source.CASH,
+              source: operation?.source || Source.CASH,
             },
             formData,
             {
