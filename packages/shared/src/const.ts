@@ -43,6 +43,8 @@ export const CATEGORY_TO_LABEL_MAP: Record<Category, string> = {
   [Category.RETURN]: "Zwrot",
   [Category.NOBILIT]: "Nobilit",
   [Category.CASH_WITHDRAW]: "Wypłata gotówki",
+  [Category.INVESTMENTS]: "Inwestycje",
+  [Category.PROACTIVUS]: "Proactivus",
   [Category.UNCATEGORIZED]: "???",
 };
 
@@ -69,8 +71,10 @@ export const CATEGORY_TO_TYPE: Record<Category, "income" | "expense" | null> = {
   [Category.TAX]: "expense",
   [Category.RETURN]: "income",
   [Category.NOBILIT]: null,
+  [Category.PROACTIVUS]: null,
   [Category.CASH_WITHDRAW]: "expense",
   [Category.UNCATEGORIZED]: null,
+  [Category.INVESTMENTS]: null,
 };
 
 export const ALL_CATEGORIES = sortByLabelMap(
